@@ -7,7 +7,7 @@ export default function Document() {
       <body>
         <Main/>
         <NextScript />
-        <link href="https://fonts.googleapis.com/css2?family=Inter&display=optional" rel="stylesheet"/>
+        <style data-href="https://fonts.googleapis.com/css2?family=Inter&display=optional"></style>
       </body>
     </Html>
   )

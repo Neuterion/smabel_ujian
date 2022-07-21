@@ -26,7 +26,7 @@ export default function SignIn({ csrfToken }) {
         </div>
         <div className='mx-0 xs:mx-4 flex flex-auto flex-col items-center justify-center'>
           {error && <SignInError error={error} />}
-          <div className='text-2xl xs:text-4xl font-extrabold'>
+          <div className='text-2xl xs:text-4xl font-bold'>
             Welcome
           </div>
           <form method="post" action="/api/auth/callback/credentials" className='flex flex-col items-center justify-center'>
