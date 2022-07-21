@@ -5,8 +5,8 @@ import { useRouter } from 'next/router'
 
 import { getCsrfToken } from "next-auth/react"
 
-import Background from '../../public/bg_school.jpg'
-import Logo from '../../public/logo.png'
+import Background from '../../public/bg_school.webp'
+import Logo from '../../public/logo.webp'
 
 export default function SignIn({ csrfToken }) {
   const { error } = useRouter().query
