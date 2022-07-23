@@ -1,9 +1,14 @@
 import { useState } from 'react'
 
-export default function Dashboard({ session, signOut, children }) {
+import Head from "next/head"
+
+export default function Dashboard({ session, signOut, title, children }) {
   const [hidden, setHidden] = useState(true)
   return (
     <div className='flex flex-col items-center justify-center w-full bg-green-500'>
+      <Head>
+        <title>{title}</title>
+      </Head>
       <div className='flex w-full justify-end py-2 px-4 text-white'>
         <div className='relative inline-block text-left'>
           <div>
