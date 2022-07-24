@@ -1,7 +1,7 @@
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faRotateLeft, faRotateRight, faBold, faItalic, faStrikethrough, faCode, faFileCode, faListUl, faListOl, faQuoteLeft } from "@fortawesome/free-solid-svg-icons"
@@ -56,49 +56,49 @@ const MenuBar = ({ editor }) => {
             <option value="" disabled>Style text</option>
             <option
               onClick={() => editor.chain().focus().setParagraph().run()}
-              className={editor.isActive('paragraph') ? 'is-active' : ''}
+              className={`text-lg ${editor.isActive('paragraph') ? 'is-active' : ''}`}
               value="p"
             >
               Normal text
             </option>
             <option
               onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-              className={`text-6xl ${editor.isActive('heading', { level: 1 }) ? 'is-active' : ''}`}
+              className={`text-6xl font-bold ${editor.isActive('heading', { level: 1 }) ? 'is-active' : ''}`}
               value="h1"
             >
               Heading 1
             </option>
             <option
               onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-              className={`text-5xl ${editor.isActive('heading', { level: 2 }) ? 'is-active' : ''}`}
+              className={`text-5xl font-bold ${editor.isActive('heading', { level: 2 }) ? 'is-active' : ''}`}
               value="h2"
             >
               Heading 2
             </option>
             <option
               onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-              className={`text-4xl ${editor.isActive('heading', { level: 3 }) ? 'is-active' : ''}`}
+              className={`text-4xl font-semibold ${editor.isActive('heading', { level: 3 }) ? 'is-active' : ''}`}
               value="h3"
             >
               Heading 3
             </option>
             <option
               onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-              className={`text-3xl ${editor.isActive('heading', { level: 4 }) ? 'is-active' : ''}`}
+              className={`text-3xl font-semibold ${editor.isActive('heading', { level: 4 }) ? 'is-active' : ''}`}
               value="h4"
             >
               Heading 4
             </option>
             <option
               onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
-              className={`text-2xl ${editor.isActive('heading', { level: 5 }) ? 'is-active' : ''}`}
+              className={`text-2xl font-medium ${editor.isActive('heading', { level: 5 }) ? 'is-active' : ''}`}
               value="h5"
             >
               Heading 5
             </option>
             <option
               onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
-              className={`text-xl ${editor.isActive('heading', { level: 6 }) ? 'is-active' : ''}`}
+              className={`text-xl font-medium ${editor.isActive('heading', { level: 6 }) ? 'is-active' : ''}`}
               value="h6"
             >
               Heading 6
@@ -164,6 +164,7 @@ const MenuBar = ({ editor }) => {
 }
 
 export default function Tiptap() {
+  const editorOutput = useRef(null)
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -199,6 +200,9 @@ export default function Tiptap() {
         — Mom
       </blockquote>
     `,
+    onUpdate: ({ editor }) => {
+      editorOutput.current.innerHTML = editor.getHTML()
+    }
   })
 
   return (
@@ -206,6 +210,7 @@ export default function Tiptap() {
       <MenuBar editor={editor} />
       <EditorStyles />
       <EditorContent editor={editor} />
+      <section className="ProseMirror" ref={editorOutput}></section>
     </div>
   )
 }
