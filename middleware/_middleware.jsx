@@ -1,14 +1,11 @@
-import { getToken } from "next-auth/jwt"
-import { NextResponse } from "next/server"
+import { getSession } from "next-auth/react";
+import { NextResponse } from "next/server";
 
 export async function middleware(req) {
-  if (!req.url.includes("/teacher/")) {
-    return NextResponse.next()
+  console.log(rq.nextUrl.pathname)
+  if (req.nextUrl.pathname === "/teacher/test") {
+    const session = await getSession({ req });
+    if (!session) return NextResponse.redirect("/api/auth/signin");
   }
-
-  const session = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
-  if (!session) return NextResponse.redirect("/api/auth/signin")
-
-  // If user is authenticated, continue.
-  return NextResponse.redirect('/test')
+  return NextResponse.next();
 }
