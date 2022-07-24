@@ -10,19 +10,19 @@ export default function Homepage() {
   return (
     <main className='flex flex-auto flex-col items-center font-inter break-all xs:break-normal'>
       <Dashboard session={session} signOut={signOut} title="115 | Dashboard">
-        <div className='flex justify-around items-center w-full shadow text-sm font-medium divide-x divide-gray-200 text-gray-500'>
+        <div className='flex justify-around items-center text-sm font-medium'>
           <Link href=''>
-            <a className='flex flex-auto justify-center bg-white p-4 hover:bg-gray-50 hover:text-gray-700'>
+            <a className='flex flex-auto justify-center text-white p-4 hover:text-gray-50'>
               Ujian Sekolah
             </a>
           </Link>
           <Link href=''>
-            <a className='flex flex-auto justify-center bg-white p-4 hover:bg-gray-50 hover:text-gray-700'>
+            <a className='flex flex-auto justify-center text-white p-4 hover:text-gray-50'>
               Pengumuman Sekolah
             </a>
           </Link>
           <Link href=''>
-            <a className='flex flex-auto justify-center bg-white p-4 hover:bg-gray-50 hover:text-gray-700'>
+            <a className='flex flex-auto justify-center text-white p-4 hover:text-gray-50'>
               Hasil Ujian
             </a>
           </Link>

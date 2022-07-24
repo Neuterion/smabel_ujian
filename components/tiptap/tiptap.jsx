@@ -9,6 +9,7 @@ import { faRotateLeft, faRotateRight, faBold, faItalic, faStrikethrough, faCode,
 import EditorStyles from './styles/editor'
 
 const MenuBar = ({ editor }) => {
+  const [choice, setChoice] = useState('')
   if (!editor) {
     return null
   }
@@ -35,7 +36,6 @@ const MenuBar = ({ editor }) => {
       editor.chain().focus().toggleHeading({ level: 6 }).run()
     }
   }
-  const [choice, setChoice] = useState('')
   return (
     <div className="flex sm:justify-center flex-wrap p-2 gap-x-4 gap-y-2 bg-slate-100">
       <div className="flex flex-row flex-wrap">

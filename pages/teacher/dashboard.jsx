@@ -12,6 +12,7 @@ export default function TeacherDashboard() {
   return (
     <main className='flex flex-auto flex-col items-center font-inter break-all xs:break-normal'>
       <Dashboard session={session} signOut={signOut} title="115 | Dashboard">
+        <div></div>
       </Dashboard>
     </main>
   )

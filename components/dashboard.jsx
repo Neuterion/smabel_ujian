@@ -1,6 +1,9 @@
 import { useState } from 'react'
 
 import Head from "next/head"
+import Image from 'next/future/image'
+
+import Logo from '../public/logo.webp'
 
 export default function Dashboard({ session, signOut, title, children }) {
   const [hidden, setHidden] = useState(true)
@@ -9,7 +12,9 @@ export default function Dashboard({ session, signOut, title, children }) {
       <Head>
         <title>{title}</title>
       </Head>
-      <div className='flex w-full justify-end py-2 px-4 text-white'>
+      <div className='flex w-full justify-between items-center py-2 px-4 text-white'>
+        <Image src={Logo} alt="Logo" width={64} height={64} />
+        { children }
         <div className='relative inline-block text-left'>
           <div>
             <button onClick={() => setHidden(!hidden)} type="button" className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500" id="menu-button" aria-expanded="true" aria-haspopup="true">
@@ -29,7 +34,6 @@ export default function Dashboard({ session, signOut, title, children }) {
           </div>
         </div>
       </div>
-      { children }
     </div>
   )
 }
