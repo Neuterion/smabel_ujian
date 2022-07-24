@@ -11,9 +11,7 @@ export default function TeacherDashboard() {
   const { data: session } = useSession()
   return (
     <main className='flex flex-auto flex-col items-center font-inter break-all xs:break-normal'>
-      <Head>
-      </Head>
-      <Dashboard session={session} signOut={signOut}>
+      <Dashboard session={session} signOut={signOut} title="115 | Dashboard">
       </Dashboard>
     </main>
   )

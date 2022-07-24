@@ -1,5 +1,6 @@
 import { useSession, getSession, signOut } from "next-auth/react"
 
+import Head from "next/head"
 import Link from "next/link"
 
 import Dashboard from '../components/dashboard'
@@ -8,7 +9,7 @@ export default function Homepage() {
   const { data: session } = useSession()
   return (
     <main className='flex flex-auto flex-col items-center font-inter break-all xs:break-normal'>
-      <Dashboard session={session} signOut={signOut}>
+      <Dashboard session={session} signOut={signOut} title="115 | Dashboard">
         <div className='flex justify-around items-center w-full shadow text-sm font-medium divide-x divide-gray-200 text-gray-500'>
           <Link href=''>
             <a className='flex flex-auto justify-center bg-white p-4 hover:bg-gray-50 hover:text-gray-700'>
