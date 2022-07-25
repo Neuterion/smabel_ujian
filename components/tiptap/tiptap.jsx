@@ -1,10 +1,18 @@
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+import Placeholder from '@tiptap/extension-placeholder'
+import Dropcursor from '@tiptap/extension-dropcursor'
+import Image from '@tiptap/extension-image'
+import TextAlign from '@tiptap/extension-text-align'
 
 import React, { useState, useRef } from 'react'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faRotateLeft, faRotateRight, faBold, faItalic, faStrikethrough, faCode, faFileCode, faListUl, faListOl, faQuoteLeft } from "@fortawesome/free-solid-svg-icons"
+import { 
+  faRotateLeft, faRotateRight, faBold, faItalic, faStrikethrough, faCode, 
+  faFileCode, faListUl, faListOl, faQuoteLeft, faAlignLeft, faAlignCenter, 
+  faAlignRight, faAlignJustify 
+} from "@fortawesome/free-solid-svg-icons"
 
 import EditorStyles from './styles/editor'
 
@@ -144,6 +152,32 @@ const MenuBar = ({ editor }) => {
       </div>
       <div className="flex flex-row flex-wrap bg-slate-100">
         <button
+          onClick={() => editor.chain().focus().setTextAlign('left').run()}
+          className={`p-2 ${editor.isActive({ textAlign: 'left' }) ? 'is-active bg-slate-300' : 'hover:bg-slate-200'}`}
+        >
+          <FontAwesomeIcon icon={faAlignLeft} />
+        </button>
+        <button
+          onClick={() => editor.chain().focus().setTextAlign('center').run()}
+          className={`p-2 ${editor.isActive({ textAlign: 'center' }) ? 'is-active bg-slate-300' : 'hover:bg-slate-200'}`}
+        >
+          <FontAwesomeIcon icon={faAlignCenter} />
+        </button>
+        <button
+          onClick={() => editor.chain().focus().setTextAlign('right').run()}
+          className={`p-2 ${editor.isActive({ textAlign: 'right' }) ? 'is-active bg-slate-300' : 'hover:bg-slate-200'}`}
+        >
+          <FontAwesomeIcon icon={faAlignRight} />
+        </button>
+        <button
+          onClick={() => editor.chain().focus().setTextAlign('justify').run()}
+          className={`p-2 ${editor.isActive({ textAlign: 'justify' }) ? 'is-active bg-slate-300' : 'hover:bg-slate-200'}`}
+        >
+          <FontAwesomeIcon icon={faAlignJustify} />
+        </button>
+      </div>
+      <div className="flex flex-row flex-wrap bg-slate-100">
+        <button
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           className={`p-2 ${editor.isActive('bulletList') ? 'is-active bg-slate-300' : 'hover:bg-slate-200'}`}
         >
@@ -168,6 +202,26 @@ export default function Tiptap() {
   const editor = useEditor({
     extensions: [
       StarterKit,
+      Placeholder.configure({
+        placeholder: ({ node }) => {
+          if (node.type.name === 'paragraph') {
+            return "Tell us more about it..."
+          }
+          else if (node.type.name === 'heading') {
+            return "What's the topic?"
+          }
+        }
+      }),
+      Image.configure({
+        allowBase64: true,
+      }),
+      Dropcursor.configure({
+        color: '#ff0000',
+        width: '2px',
+      }),
+      TextAlign.configure({
+        types: ['heading', 'paragraph'],
+      })
     ],
     content: `
       <h2>
