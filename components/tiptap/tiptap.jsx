@@ -253,18 +253,22 @@ export default function Tiptap() {
         <br />
         — Mom
       </blockquote>
-    `,
-    onUpdate: ({ editor }) => {
-      editorOutput.current.innerHTML = editor.getHTML()
-    }
+    `
   })
 
   return (
     <div className="flex flex-col m-2 divide-y-2 divide-slate-900 border-2 border-slate-900" spellCheck="false">
       <MenuBar editor={editor} />
       <EditorStyles />
-      <EditorContent editor={editor} />
-      <section className="ProseMirror" ref={editorOutput}></section>
+      <form className="flex flex-col divide-y-2 divide-slate-900">
+        <EditorContent editor={editor} />
+        <button type="submit" className="" onClick={() => {
+          const content = editor.getHTML()
+          
+        }}>
+          Submit
+        </button>
+      </form>
     </div>
   )
 }
