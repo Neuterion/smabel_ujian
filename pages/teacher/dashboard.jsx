@@ -1,11 +1,7 @@
 import { useSession, getSession, signOut } from "next-auth/react"
 
-import { useState } from 'react'
-
-import Head from 'next/head'
-import Script from 'next/script'
-
 import Dashboard from '../../components/dashboard'
+import { TeacherProtection } from '../../components/protected'
 
 export default function TeacherDashboard() {
   const { data: session } = useSession()
@@ -18,25 +14,4 @@ export default function TeacherDashboard() {
   )
 }
 
-export async function getServerSideProps({ req, res }) {
-  const session = await getSession({ req })
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/auth/sign-in',
-        permanent: false,
-      },
-    }
-  } else if (!session.isTeacher) {
-    return {
-      redirect: {
-        destination: '/dashboard',
-        permanent: false,
-      }
-    }
-  }
-
-  return {
-    props: { session }
-  }
-}
+export const getServerSideProps = TeacherProtection

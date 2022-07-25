@@ -10,7 +10,22 @@ const nextConfig = {
     return [
       {
         source: '/',
-        destination: '/dashboard',
+        destination: '/student/dashboard',
+        permanent: true,
+      },
+      {
+        source: '/dashboard',
+        destination: '/student/dashboard',
+        permanent: true,
+      },
+      {
+        source: '/student',
+        destination: '/student/dashboard',
+        permanent: true,
+      },
+      {
+        source: '/teacher',
+        destination: '/teacher/dashboard',
         permanent: true,
       }
     ]

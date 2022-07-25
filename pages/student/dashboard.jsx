@@ -3,7 +3,8 @@ import { useSession, getSession, signOut } from "next-auth/react"
 import Head from "next/head"
 import Link from "next/link"
 
-import Dashboard from '../components/dashboard'
+import Dashboard from '../../components/dashboard'
+import { StudentProtection } from '../../components/protected'
 
 export default function Homepage() {
   const { data: session } = useSession()
@@ -32,25 +33,4 @@ export default function Homepage() {
   )
 }
 
-export async function getServerSideProps({ req, res }) {
-  const session = await getSession({ req })
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/auth/sign-in',
-        permanent: false,
-      },
-    }
-  } else if (session.isTeacher) {
-    return {
-      redirect: {
-        destination: '/teacher/dashboard',
-        permanent: false,
-      }
-    }
-  }
-
-  return {
-    props: { session }
-  }
-}
+export const getServerSideProps = StudentProtection

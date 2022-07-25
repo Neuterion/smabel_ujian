@@ -26,6 +26,22 @@ export default NextAuth({
     })
   ],
   callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      if (user.isTeacher) {
+        return {
+          redirect: {
+            destination: '/teacher/dashboard',
+            permanent: false,
+          }
+        }
+      }
+      return {
+        redirect: {
+          destination: '/student/dashboard',
+          permanent: false,
+        }
+      }
+    },
     async jwt({ token, user, account, profile, isNewUser }) {
       if (user) {
         token.isTeacher = user.isTeacher
