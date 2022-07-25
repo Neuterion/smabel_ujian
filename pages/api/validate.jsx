@@ -18,5 +18,5 @@ export default async function handler(req, res) {
     return res.status(400).json({ data: 'Invalid ID/password.' })
   }
 
-  res.status(200).json(user)
+  return res.status(200).json(user)
 }

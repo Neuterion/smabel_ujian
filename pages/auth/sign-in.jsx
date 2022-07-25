@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import { getCsrfToken } from "next-auth/react"
+import { getCsrfToken, signIn } from "next-auth/react"
 
 import Background from '../../public/bg_school.webp'
 import Logo from '../../public/logo.webp'
@@ -45,7 +45,7 @@ export default function SignIn({ csrfToken }) {
               </Link>
             </div>
             <div className='font-medium my-1'>
-              <button type='submit' className='px-5 py-1.5 rounded-md bg-blue-600 hover:bg-blue-800 text-slate-100 transition-colors duration-75'>
+              <button onClick={() => signIn('credentials', { callbackUrl: '/' })} className='px-5 py-1.5 rounded-md bg-blue-600 hover:bg-blue-800 text-slate-100 transition-colors duration-75'>
                 Log In
               </button>
             </div>

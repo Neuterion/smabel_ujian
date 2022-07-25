@@ -19,6 +19,7 @@ export default NextAuth({
         const user = await res.json()
 
         if (res.ok && user) {
+          console.log(user)
           return user
         }
         return null
@@ -26,13 +27,30 @@ export default NextAuth({
     })
   ],
   callbacks: {
-    async jwt({ token, user, account, profile, isNewUser }) {
+    // signIn: async (user, account, profile, session, token, req, res) => {
+    //   const { isTeacher } = user
+    //   if (isTeacher) {
+    //     return {
+    //       redirect: {
+    //         destination: '/teacher/dashboard',
+    //         permanent: false,
+    //       }
+    //     }
+    //   }
+    //   return {
+    //     redirect: {
+    //       destination: '/dashboard',
+    //       permanent: false,
+    //     }
+    //   }
+    // },
+    jwt: async ({ token, user, account, profile, isNewUser }) => {
       if (user) {
         token.isTeacher = user.isTeacher
       }
       return token
     },
-    async session({ session, token, user }) {
+    session: async ({ session, token, user }) => {
       // Send properties to the client, like an access_token from a provider.
       if (token) {
         session.isTeacher = token.isTeacher
