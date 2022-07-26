@@ -11,13 +11,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { 
   faRotateLeft, faRotateRight, faBold, faItalic, faStrikethrough, faCode, 
   faFileCode, faListUl, faListOl, faQuoteLeft, faAlignLeft, faAlignCenter, 
-  faAlignRight, faAlignJustify 
+  faAlignRight, faImage
 } from "@fortawesome/free-solid-svg-icons"
 
 import EditorStyles from './styles/editor'
 
 const MenuBar = ({ editor }) => {
   const [choice, setChoice] = useState('')
+  const uploadImage = useRef(null)
   if (!editor) {
     return null
   }
@@ -46,7 +47,7 @@ const MenuBar = ({ editor }) => {
   }
   return (
     <div className="flex sm:justify-center flex-wrap p-2 gap-x-4 gap-y-2 bg-slate-100">
-      <div className="flex flex-row flex-wrap">
+      <div id="undo-redo" className="flex flex-row flex-wrap">
         <button className="p-2 hover:bg-slate-200 focus:bg-slate-300" onClick={() => editor.chain().focus().undo().run()}>
           <FontAwesomeIcon icon={faRotateLeft} />
         </button>
@@ -54,7 +55,7 @@ const MenuBar = ({ editor }) => {
           <FontAwesomeIcon icon={faRotateRight} />
         </button>
       </div>
-      <div className="flex flex-row flex-wrap bg-slate-100">
+      <div id="text-style" className="flex flex-row flex-wrap bg-slate-100">
         <div className="p-1 hover:bg-slate-200">
           <select id="text-styles-dropdown" className="p-2 outline-none w-full" value={choice} onChange={(e) => {
             const value = e.target.value
@@ -150,7 +151,7 @@ const MenuBar = ({ editor }) => {
           <FontAwesomeIcon icon={faFileCode} />
         </button>
       </div>
-      <div className="flex flex-row flex-wrap bg-slate-100">
+      <div id="text-align" className="flex flex-row flex-wrap bg-slate-100">
         <button
           onClick={() => editor.chain().focus().setTextAlign('left').run()}
           className={`p-2 ${editor.isActive({ textAlign: 'left' }) ? 'is-active bg-slate-300' : 'hover:bg-slate-200'}`}
@@ -169,14 +170,34 @@ const MenuBar = ({ editor }) => {
         >
           <FontAwesomeIcon icon={faAlignRight} />
         </button>
-        <button
-          onClick={() => editor.chain().focus().setTextAlign('justify').run()}
-          className={`p-2 ${editor.isActive({ textAlign: 'justify' }) ? 'is-active bg-slate-300' : 'hover:bg-slate-200'}`}
-        >
-          <FontAwesomeIcon icon={faAlignJustify} />
-        </button>
       </div>
-      <div className="flex flex-row flex-wrap bg-slate-100">
+      <div id="upload-image" className="flex flex-row flex-wrap bg-slate-100">
+        <div className="flex">
+          <input type="file" accept="image/*" className="hidden" multiple ref={uploadImage} onChange={(e) => {
+            const files = e.target.files
+            if (files.length > 0) {
+              for (let i = 0; i < files.length; i++) {
+                const file = files[i]
+                const reader = new FileReader()
+                reader.onload = (e) => {
+                  const src = e.target.result
+                  editor.commands.setImage({ src })
+                }
+                reader.readAsDataURL(file)
+              }
+            }
+          }} />
+          <button
+            onClick = {() => {
+              uploadImage.current.click()
+            }}
+            className="p-2 hover:bg-slate-200 active:bg-slate-300"
+          >
+            <FontAwesomeIcon icon={faImage} />
+          </button>
+        </div>
+      </div>
+      <div id="misc" className="flex flex-row flex-wrap bg-slate-100">
         <button
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           className={`p-2 ${editor.isActive('bulletList') ? 'is-active bg-slate-300' : 'hover:bg-slate-200'}`}
@@ -198,7 +219,6 @@ const MenuBar = ({ editor }) => {
 }
 
 export default function Tiptap() {
-  const editorOutput = useRef(null)
   const editor = useEditor({
     extensions: [
       StarterKit,

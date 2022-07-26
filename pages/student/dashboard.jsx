@@ -1,6 +1,5 @@
-import { useSession, getSession, signOut } from "next-auth/react"
+import { useSession, signOut } from "next-auth/react"
 
-import Head from "next/head"
 import Link from "next/link"
 
 import Dashboard from '../../components/dashboard'

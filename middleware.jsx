@@ -14,5 +14,6 @@ export const config = {
   matcher: [
     '/student/:path*',
     '/teacher/:path*',
+    '/dashboard',
   ]
 }
