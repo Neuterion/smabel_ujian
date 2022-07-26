@@ -1,17 +1,14 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
-import Router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 
-import { getCsrfToken, getSession, useSession } from "next-auth/react"
+import { getCsrfToken, getSession} from "next-auth/react"
 
 import Background from '../../public/bg_school.webp'
 import Logo from '../../public/logo.webp'
 
 export default function SignIn({ csrfToken }) {
-  const { data: session } = useSession()
-  if (!session) Router.push('/dashboard')
-  
   const { error } = useRouter().query
   return (
     <main className='flex flex-auto flex-col items-center justify-center font-inter break-all xs:break-normal'>
@@ -74,6 +71,14 @@ const SignInError = ({ error }) => {
 
 export async function getServerSideProps(context) {
   const session = await getSession({ req: context.req })
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/dashboard',
+        permanent: false,
+      }
+    }
+  }
   return {
     props: {
       csrfToken: await getCsrfToken(context),

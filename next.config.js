@@ -11,17 +11,17 @@ const nextConfig = {
       {
         source: '/',
         destination: '/dashboard',
-        permanent: true,
+        permanent: false,
       },
       {
         source: '/student',
         destination: '/student/dashboard',
-        permanent: true,
+        permanent: false,
       },
       {
         source: '/teacher',
         destination: '/teacher/dashboard',
-        permanent: true,
+        permanent: false,
       }
     ]
   }
