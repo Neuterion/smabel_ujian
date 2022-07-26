@@ -6,7 +6,7 @@ export default () => {
   if (session.isTeacher) {
     Router.push('/teacher/dashboard')
   }
-  if (!session.isTeacher) {
+  else {
     Router.push('/student/dashboard')
   }
   return <div>Redirecting...</div>
