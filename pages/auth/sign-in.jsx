@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import { getCsrfToken, getSession } from "next-auth/react"
+import { getCsrfToken } from "next-auth/react"
 
 import Background from '../../public/bg_school.webp'
 import Logo from '../../public/logo.webp'
