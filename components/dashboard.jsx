@@ -8,7 +8,7 @@ import Logo from '../public/logo.webp'
 export default function Dashboard({ session, signOut, title, children }) {
   const [hidden, setHidden] = useState(true)
   return (
-    <div className='flex flex-col items-center justify-center w-full bg-green-500'>
+    <div className='flex flex-col items-center justify-center w-full bg-green-500 drop-shadow-sm'>
       <Head>
         <title>{title}</title>
       </Head>

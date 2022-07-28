@@ -4,6 +4,7 @@ export default withAuth(
   {
     callbacks: {
       authorized: ({ token, req }) => {
+        if (req.nextUrl.pathname.startsWith('/api')) return false
         return !!token
       }
     }
@@ -15,5 +16,6 @@ export const config = {
     '/student/:path*',
     '/teacher/:path*',
     '/dashboard',
+    '/api/:path*',
   ]
 }

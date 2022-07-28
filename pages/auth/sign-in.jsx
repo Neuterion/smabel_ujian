@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import { getCsrfToken } from "next-auth/react"
+import { getToken } from 'next-auth/jwt'
 
 import Background from '../../public/bg_school.webp'
 import Logo from '../../public/logo.webp'

@@ -1,20 +1,25 @@
-import Router from 'next/router'
-import { getSession, useSession } from 'next-auth/react'
+import { getSession } from 'next-auth/react'
 
 export default () => {
-  const { data: session } = useSession()
-  if (session.isTeacher) {
-    Router.push('/teacher/dashboard')
-  }
-  else {
-    Router.push('/student/dashboard')
-  }
   return <div>Redirecting...</div>
 }
 
 export const getServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req })
-  return {
-    props: { session }
+  if (session.isTeacher) {
+    return {
+      redirect: {
+        destination: '/teacher/dashboard',
+        permanent: false,
+      }
+    }
+  }
+  else {
+    return {
+      redirect: {
+        destination: '/student/dashboard',
+        permanent: false,
+      }
+    }
   }
 }
