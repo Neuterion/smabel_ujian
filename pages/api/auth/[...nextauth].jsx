@@ -44,6 +44,7 @@ export default NextAuth({
     },
     async jwt({ token, user, account, profile, isNewUser }) {
       if (user) {
+        token.id = user.id
         token.isTeacher = user.isTeacher
       }
       return token

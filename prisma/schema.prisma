@@ -46,6 +46,8 @@ model User {
   emailVerified DateTime?
   accounts      Account[]
   sessions      Session[]
+  announcements Announcement[]
+  exams         Exam[]
 }
 
 model VerificationToken {
@@ -54,4 +56,45 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Announcement {
+  id          String   @id
+  title       String
+  description String @default("")
+  content     String @default("")
+  createdAt   DateTime
+  updatedAt   DateTime
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Exam {
+  id          String   @id
+  title       String
+  questions   Question[]
+  createdAt   DateTime
+  updatedAt   DateTime
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Question {
+  id          String   @id
+  question    String
+  choices     Choice[]
+  createdAt   DateTime
+  updatedAt   DateTime
+  examId      String
+  exam        Exam     @relation(fields: [examId], references: [id], onDelete: Cascade)
+}
+
+model Choice {
+  id          String   @id
+  choice      String
+  isCorrect   Boolean
+  createdAt   DateTime
+  updatedAt   DateTime
+  questionId  String
+  question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 }

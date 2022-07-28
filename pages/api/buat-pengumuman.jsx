@@ -7,16 +7,15 @@ export default async function handler(req, res) {
 
   // Get data submitted in request's body.
   const body = req.body
-
-  const user = await prisma.user.findUnique({
-    where: {
-      id: body.id
+  
+  // Create a new Pengumuman
+  const pengumuman = await prisma.pengumuman.create({
+    data: {
+      title: body.title,
+      description: body.description,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      userId: author.id
     }
   })
-
-  if (user === null || user.password !== body.password) {
-    return res.status(400).json({ data: 'Invalid ID/password.' })
-  }
-
-  res.status(200).json(user)
 }
