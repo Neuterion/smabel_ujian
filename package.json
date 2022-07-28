@@ -23,7 +23,7 @@
     "@tiptap/starter-kit": "^2.0.0-beta.190",
     "css-loader": "^5.2.7",
     "file": "^0.2.2",
-    "next": "^12.2.3",
+    "next": "^12.2.2",
     "next-auth": "^4.6.1",
     "postcss-loader": "^4.3.0",
     "raw-loader": "^4.0.2",

@@ -284,7 +284,7 @@ export default function Tiptap() {
         <EditorContent editor={editor} />
         <button type="submit" className="" onClick={() => {
           const content = editor.getHTML()
-          
+          console.log(JSON.stringify(content))
         }}>
           Submit
         </button>
