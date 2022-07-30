@@ -1,4 +1,5 @@
 import { prisma } from '../../lib/prisma'
+import { getToken } from 'next-auth/jwt'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -7,15 +8,20 @@ export default async function handler(req, res) {
 
   // Get data submitted in request's body.
   const body = req.body
+  const { id } = await getToken({ req })
   
   // Create a new Pengumuman
-  const pengumuman = await prisma.pengumuman.create({
+  const pengumuman = await prisma.announcement.create({
     data: {
       title: body.title,
-      description: body.description,
+      content: body.content,
       createdAt: new Date(),
       updatedAt: new Date(),
-      userId: author.id
+      userId: id
     }
   })
+
+  if (pengumuman) {
+    return res.redirect(302, `/teacher/pengumuman/${pengumuman.id}/edit`)
+  }
 }

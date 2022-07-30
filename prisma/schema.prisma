@@ -59,18 +59,18 @@ model VerificationToken {
 }
 
 model Announcement {
-  id          String   @id
-  title       String
-  description String @default("")
-  content     String @default("")
+  id          Int   @id @default(autoincrement())
+  title       String 
+  content     String   @default("")
   createdAt   DateTime
   updatedAt   DateTime
+  isPublished Boolean  @default(false)
   userId      String
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Exam {
-  id          String   @id
+  id          String    @id @default(cuid())
   title       String
   questions   Question[]
   createdAt   DateTime
@@ -80,7 +80,7 @@ model Exam {
 }
 
 model Question {
-  id          String   @id
+  id          String   @id @default(cuid())
   question    String
   choices     Choice[]
   createdAt   DateTime
@@ -90,7 +90,7 @@ model Question {
 }
 
 model Choice {
-  id          String   @id
+  id          String   @id @default(cuid())
   choice      String
   isCorrect   Boolean
   createdAt   DateTime

@@ -52,6 +52,7 @@ export default NextAuth({
     async session({ session, token, user }) {
       // Send properties to the client, like an access_token from a provider.
       if (token) {
+        session.id = token.id
         session.isTeacher = token.isTeacher
       }
       return session

@@ -1,4 +1,4 @@
-export default function EditorStyles() {
+export default function ContentStyles() {
   return (
     <style global jsx>{`
       .ProseMirror {
@@ -68,6 +68,8 @@ export default function EditorStyles() {
       .ProseMirror img {
         max-width: 100%;
         height: auto;
+        pointer-events: auto;
+        user-select: auto;
       }
       .ProseMirror blockquote {
         margin-left: 1rem;

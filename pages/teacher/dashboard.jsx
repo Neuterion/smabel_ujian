@@ -15,17 +15,16 @@ export default function TeacherDashboard() {
           <h1 className='flex flex-none justify-center p-4 bg-green-600 text-white font-bold drop-shadow-sm cursor-default'>
             Pengumuman Anda
           </h1>
-          <button 
-            className="flex items-center p-3 mt-3 mx-auto gap-x-1.5 bg-cyan-400 hover:bg-cyan-500 text-white rounded-md"
-            onClick={() => window.open('/teacher/pengumuman/create', '_blank')}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3.25}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-            </svg>
-            <h4 className="text-sm font-semibold">
-              Buat pengumuman baru
-            </h4>
-          </button>
+          <Link href="/teacher/pengumuman/create" target="_blank">
+            <a className="flex items-center p-3 mt-3 mx-auto gap-x-1.5 bg-cyan-400 hover:bg-cyan-500 text-white rounded-md">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3.25}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+              </svg>
+              <h4 className="text-sm font-semibold">
+                Buat pengumuman baru
+              </h4>
+            </a>
+          </Link>
         </div>
         <div id="ujian" className="flex-auto flex flex-col">
           <h1 className='flex flex-none justify-center p-4 bg-green-600 text-white font-bold drop-shadow-sm cursor-default -z-[1]'>
