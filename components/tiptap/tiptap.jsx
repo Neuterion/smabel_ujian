@@ -97,6 +97,13 @@ export function EditorContentStyles() {
         border-top: 2px solid rgba(13, 13, 13, 0.1);
         margin: 2rem 0;
       }
+      .ProseMirror p.is-editor-empty:first-child::before {
+        color: #adb5bd;
+        content: attr(data-placeholder);
+        float: left;
+        height: 0;
+        pointer-events: none;
+      }
     `}</style>
   )
 }
@@ -292,7 +299,7 @@ export const MenuButtons = ({ editor, children }) => {
       <div id="upload-image" className="flex flex-row flex-wrap">
         <div className="flex">
           <input type="file" accept="image/*" className="hidden" multiple ref={uploadImage} onChange={toggleImageUpload} />
-          <button onClick = {() => uploadImage.current.click()} className="p-2 hover:bg-slate-200 active:bg-slate-300">
+          <button onClick = {() => {console.log(document.activeElement); uploadImage.current.click()}} className="p-2 hover:bg-slate-200 active:bg-slate-300">
             <FontAwesomeIcon icon={faImage} />
           </button>
         </div>
