@@ -64,7 +64,6 @@ model Announcement {
   content     String   @default("")
   createdAt   DateTime
   updatedAt   DateTime
-  isPublished Boolean  @default(false)
   userId      String
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

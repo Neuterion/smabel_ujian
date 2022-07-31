@@ -2,16 +2,16 @@ import { prisma } from '../../../../lib/prisma'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 
+import Tiptap from '../../../../components/tiptap/tiptap'
+
 export default ({ announcement }) => {
   const { data: session, status } = useSession()
   if (status === 'authenticated') {
     const router = useRouter()
-    if (announcement.userId !== session.id) {
-      return router.push(`/pengumuman/${announcement.id}`)
-    }
+    if (announcement.userId !== session.id) router.push(`/pengumuman/${announcement.id}`)
     return (
       <div>
-        <h1>Hello World</h1>
+        <Tiptap />
       </div>
     )
   }

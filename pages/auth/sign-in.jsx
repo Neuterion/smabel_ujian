@@ -3,8 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import { getCsrfToken } from "next-auth/react"
-import { getToken } from 'next-auth/jwt'
+import { getCsrfToken, getSession } from "next-auth/react"
 
 import Background from '../../public/bg_school.webp'
 import Logo from '../../public/logo.webp'
@@ -71,6 +70,15 @@ const SignInError = ({ error }) => {
 }
 
 export async function getServerSideProps(context) {
+  const session = await getSession({ req: context.req })
+  if (session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
+  }
   return {
     props: {
       csrfToken: await getCsrfToken(context),

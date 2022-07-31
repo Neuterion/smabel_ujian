@@ -4,7 +4,11 @@ export default withAuth(
   {
     callbacks: {
       authorized: ({ token, req }) => {
-        return !!token
+        if (!token) return false
+        if (req.nextUrl.pathname.startsWith('/student/')) return !token.isTeacher
+        if (req.nextUrl.pathname.startsWith('/teacher/')) return token.isTeacher
+
+        return true
       }
     }
   }

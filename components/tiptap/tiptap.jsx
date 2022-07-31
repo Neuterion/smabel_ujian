@@ -16,7 +16,7 @@ import {
 
 import ContentStyles from './styles/editor'
 
-const MenuBar = ({ editor, form, contentInput, titleInput }) => {
+const MenuBar = ({ editor, form=false, contentInput=false, titleInput=false }) => {
   const [choice, setChoice] = useState('')
 
   const [title, setTitle] = useState('Untitled')
@@ -72,11 +72,14 @@ const MenuBar = ({ editor, form, contentInput, titleInput }) => {
 
   return (
     <div class="flex flex-col w-full bg-slate-100">
-      <input 
-        ref={titleRef} type="text" name="title" 
-        onChange={() => setTitle(titleRef.current.value)} value={title} 
-        autoComplete="off" className="bg-inherit h-full outline-none border-2 border-transparent focus:border-slate-200 mx-2 mt-2 py-2 text-center text-3xl italic"
-      />
+      { form && contentInput && titleInput ?
+        <input 
+          ref={titleRef} type="text" name="title" 
+          onChange={() => setTitle(titleRef.current.value)} value={title} 
+          autoComplete="off" className="bg-inherit h-full outline-none border-2 border-transparent focus:border-slate-200 mx-2 mt-2 py-2 text-center text-3xl italic"
+        />
+        : null       
+      }
       <div className="flex sm:justify-center flex-wrap p-2 gap-x-4 gap-y-2">
         <div id="undo-redo" className="flex flex-row flex-wrap">
           <button className="p-2 hover:bg-slate-200 focus:bg-slate-300" onClick={() => editor.chain().focus().undo().run()}>
@@ -247,14 +250,7 @@ export default function Tiptap(isForm=false) {
     extensions: [
       StarterKit,
       Placeholder.configure({
-        placeholder: ({ node }) => {
-          if (node.type.name === 'paragraph') {
-            return "Tell us more about it..."
-          }
-          else if (node.type.name === 'heading') {
-            return "What's the topic?"
-          }
-        }
+        placeholder: "Tulis sesuatu..."
       }),
       Image.configure({
         allowBase64: true,
@@ -266,38 +262,7 @@ export default function Tiptap(isForm=false) {
       TextAlign.configure({
         types: ['heading', 'paragraph'],
       })
-    ],
-    content: `
-      <h2>
-        Hi there,
-      </h2>
-      <p>
-        this is a <em>basic</em> example of <strong>tiptap</strong>. Sure, there are all kind of basic text styles you’d probably expect from a text editor. But wait until you see the lists:
-      </p>
-      <ul>
-        <li>
-          That’s a bullet list with one …
-        </li>
-        <li>
-          … or two list items.
-        </li>
-      </ul>
-      <p>
-        Isn’t that great? And all of that is editable. But wait, there’s more. Let’s try a code block:
-      </p>
-      <pre>
-<code class="language-css">body {
-  display: none;
-}</code></pre>
-      <p>
-        I know, I know, this is impressive. It’s only the tip of the iceberg though. Give it a try and click a little bit around. Don’t forget to check the other examples too.
-      </p>
-      <blockquote>
-        Wow, that’s amazing. Good work, boy! 👏
-        <br />
-        — Mom
-      </blockquote>
-    `
+    ]
   })
 
   if (isForm) {
