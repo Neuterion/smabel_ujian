@@ -208,7 +208,10 @@ const MenuBar = ({ editor, form=false, contentInput=false, titleInput=false }) =
         <div id="upload-image" className="flex flex-row flex-wrap bg-slate-100">
           <div className="flex">
             <input type="file" accept="image/*" className="hidden" multiple ref={uploadImage} onChange={toggleImageUpload} />
-            <button onClick = {() => uploadImage.current.click()} className="p-2 hover:bg-slate-200 active:bg-slate-300">
+            <button onClick = {() => {
+              uploadImage.current.value = null
+              uploadImage.current.click()
+            }} className="p-2 hover:bg-slate-200 active:bg-slate-300">
               <FontAwesomeIcon icon={faImage} />
             </button>
           </div>
