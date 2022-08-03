@@ -29,7 +29,7 @@ export default function TeacherDashboard({ userAnnouncements: announcements }) {
             </Link>
             {announcements.map(announcement => (
               <Link href="/teacher/pengumuman/[id]/edit" as={`/teacher/pengumuman/${announcement.id}/edit`} key={announcement.id}>
-                <a>
+                <a target="_blank">
                   <h1 className="text-3xl italic">
                     {announcement.title}
                   </h1>

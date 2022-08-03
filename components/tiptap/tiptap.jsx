@@ -299,11 +299,9 @@ export const MenuButtons = ({ editor, children }) => {
         </button>
       </div>
       <div id="upload-image" className="flex flex-row flex-wrap">
-        <div className="flex">
-          <input type="file" accept="image/*" className="hidden" multiple ref={uploadImage} onChange={toggleImageUpload} />
-          <button onClick = {() => {console.log(document.activeElement); uploadImage.current.click()}} className="p-2 hover:bg-slate-200 active:bg-slate-300">
-            <FontAwesomeIcon icon={faImage} />
-          </button>
+        <input type="file" accept="image/*" className="hidden" multiple ref={uploadImage} onChange={toggleImageUpload} />
+        <div onClick = {() => uploadImage.current.click()} className="flex items-center p-2 hover:bg-slate-200 active:bg-slate-300">
+          <FontAwesomeIcon icon={faImage} />
         </div>
       </div>
       <div id="misc" className="flex flex-row flex-wrap">

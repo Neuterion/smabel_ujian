@@ -1,19 +1,25 @@
+import Link from 'next/link'
+import Head from 'next/head'
+
 import { prisma } from '../../lib/prisma'
-import ContentStyles from '../../components/tiptap/styles/editor'
+import { EditorContentStyles } from '../../components/tiptap/tiptap'
 
 export default ({ announcements }) => {
   return (
     <main>
-      <ContentStyles />
+      <Head>
+        <title>
+          115 | Pengumuman
+        </title>
+      </Head>
+      <EditorContentStyles />
       {announcements.map((announcement) => {
         return (
-          <div key={announcement.id}>
-            <h1 className="text-3xl italic">
+          <Link key={announcement.id} href="/pengumuman/[id]" as={`/pengumuman/${announcement.id}`}>
+            <a target="_blank" className="text-3xl block italic">
               {announcement.title}
-            </h1>
-            <div className="ProseMirror" dangerouslySetInnerHTML={{ __html: announcement.content }}>
-            </div>
-          </div>
+            </a>
+          </Link>
         )
       })}
     </main>

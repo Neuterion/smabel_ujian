@@ -1,10 +1,17 @@
 import { prisma } from '../../lib/prisma'
-import ContentStyles from '../../components/tiptap/styles/editor'
+import { EditorContentStyles } from '../../components/tiptap/tiptap'
+
+import Head from 'next/head'
 
 export default ({ announcement }) => {
   return (
-    <main className="p-4">
-      <ContentStyles />
+    <main className="p-4 cursor-default">
+      <Head>
+        <title>
+          115 | {announcement.title}
+        </title>
+      </Head>
+      <EditorContentStyles />
       <h1>
         {announcement.title}
       </h1>
@@ -22,7 +29,9 @@ export async function getStaticPaths() {
   })
   return {
     paths: announcements.map(({ id }) => ({
-      params: { id: id.toString() }
+      params: { 
+        id: id.toString() 
+      }
     })),
     fallback: false
   }
