@@ -6,8 +6,8 @@ import Tiptap from '../../../../components/tiptap/tiptap'
 
 export default function EditAnnouncement({ announcement }) {
   const { data: session, status } = useSession()
+  const router = useRouter()
   if (status === 'authenticated') {
-    const router = useRouter()
     if (announcement.userId !== session.id) router.push(`/pengumuman/${announcement.id}`)
     return (
       <div>

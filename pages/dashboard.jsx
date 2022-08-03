@@ -1,6 +1,6 @@
 import { getSession } from 'next-auth/react'
 
-export default () => {
+export default function RedirectToAssignedDashboard() {
   return <div>Redirecting...</div>
 }
 
