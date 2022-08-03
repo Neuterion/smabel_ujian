@@ -86,6 +86,7 @@ export function EditorContentStyles() {
         height: auto;
         pointer-events: auto;
         user-select: auto;
+        margin: 0.5rem 0;
       }
       .ProseMirror blockquote {
         margin-left: 1rem;
@@ -165,6 +166,7 @@ export const MenuButtons = ({ editor, children }) => {
         reader.onload = (e) => {
           const src = e.target.result
           editor.commands.setImage({ src })
+          editor.commands.createParagraphNear()
         }
         reader.readAsDataURL(file)
       }
