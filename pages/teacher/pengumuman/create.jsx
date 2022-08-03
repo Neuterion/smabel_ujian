@@ -5,7 +5,7 @@ import React, { useState, useRef } from 'react'
 import { EditorContent, useEditor } from '@tiptap/react'
 import { TiptapTemplate, MenuBarStyles, MenuButtons, EditorConfig, EditorContentStyles } from '../../../components/tiptap/tiptap'
 
-export default () => {
+export default function CreateAnnouncement() {
   EditorConfig['autofocus'] = true
   const editor = useEditor(EditorConfig)
 

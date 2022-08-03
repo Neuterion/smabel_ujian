@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 
 import Tiptap from '../../../../components/tiptap/tiptap'
 
-export default ({ announcement }) => {
+export default function EditAnnouncement({ announcement }) {
   const { data: session, status } = useSession()
   if (status === 'authenticated') {
     const router = useRouter()

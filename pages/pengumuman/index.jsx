@@ -4,7 +4,7 @@ import Head from 'next/head'
 import { prisma } from '../../lib/prisma'
 import { EditorContentStyles } from '../../components/tiptap/tiptap'
 
-export default ({ announcements }) => {
+export default function AnnouncementsDisplay({ announcements }) {
   return (
     <main>
       <Head>

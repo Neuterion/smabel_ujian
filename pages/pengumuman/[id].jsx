@@ -3,7 +3,7 @@ import { EditorContentStyles } from '../../components/tiptap/tiptap'
 
 import Head from 'next/head'
 
-export default ({ announcement }) => {
+export default function AnnouncementDisplay({ announcement }) {
   return (
     <main className="p-4 cursor-default">
       <Head>
