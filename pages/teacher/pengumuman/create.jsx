@@ -11,18 +11,20 @@ export default function CreateAnnouncement() {
 
   // Setting document title state
   const [title, setTitle] = useState('Untitled')
-  const titleRef = useRef(null)
-  titleRef.current?.addEventListener('focusout', () => {
-    if (titleRef.current.value === '') setTitle('Untitled')
+  const titleInput = useRef(null)
+  titleInput.current?.addEventListener('focusout', () => {
+    if (titleInput.current.value === '') setTitle('Untitled')
   })
 
   // Setting form data on submit
   const formRef = useRef(null)
-  const contentRef = useRef(null)
+  const contentInput = useRef(null)
+  const createDateInput = useRef(null)
 
   // Handling form submit
   const handleSubmit = () => {
-    contentRef.current.value = editor.getHTML()
+    contentInput.current.value = editor.getHTML()
+    createDateInput.current.value = new Date()
     formRef.current.submit()
   }
   return (
@@ -30,25 +32,26 @@ export default function CreateAnnouncement() {
       <Head>
         <title>115 | Buat Pengumuman</title>
       </Head>
-      <form ref={formRef} action="/api/buat-pengumuman" method="post" className="flex-auto w-full flex overflow-y-auto">
+      <form ref={formRef} action="/api/pengumuman/create" method="post" onSubmit={(e) => e.preventDefault()} className="flex-auto w-full flex overflow-y-auto">
         <TiptapTemplate>
           <div className="flex flex-col w-full bg-slate-100">
             <input
-              ref={titleRef} type="text" name="title" 
-              onChange={() => setTitle(titleRef.current.value)} value={title} autoComplete="off" 
+              ref={titleInput} type="text" name="title" 
+              onChange={() => setTitle(titleInput.current.value)} value={title} autoComplete="off" 
               className="bg-inherit h-full outline-none border-2 border-transparent focus:border-slate-200 mx-2 mt-2 py-2 text-center text-3xl italic"
             />
             <div className={`${MenuBarStyles} items-center content-center`}>
               <MenuButtons editor={editor}>
-                <button onClick={handleSubmit} className="px-4 py-2 text-lg font-bold bg-blue-500 hover:bg-blue-700 text-white rounded-md">
-                  Simpan
+                <button onClick={handleSubmit} className="px-4 py-2 text-lg font-bold bg-green-400 hover:bg-green-500 text-white rounded-md">
+                  Buat
                 </button>
               </MenuButtons>
             </div>
           </div>
           <EditorContentStyles />
           <EditorContent autoFocus editor={editor} className="overflow-y-auto" />
-          <input ref={contentRef} type="hidden" name="content" value="" />
+          <input ref={createDateInput} type="hidden" name="createDate" value="" />
+          <input ref={contentInput} type="hidden" name="content" value="" />
         </TiptapTemplate>
       </form>
     </main>
