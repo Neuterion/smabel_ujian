@@ -1,70 +1,77 @@
-import { useSession, getSession, signOut } from "next-auth/react"
+import { useSession, getSession } from "next-auth/react"
 
 import Link from 'next/link'
 
 import { prisma } from '../../lib/prisma'
 
-import Dashboard from '../../components/dashboard'
-
 export default function TeacherDashboard({ userAnnouncements: announcements }) {
   const { data: session, status } = useSession()
   if (status === 'authenticated') {
+    const datetimeToString = (datetime) => {
+      const dividers = [60, 60, 24, 7, 3, 1]
+      const timeTypes = [
+        {timeType: 'detik', roundingType: (x) => Math.floor(x)}, 
+        {timeType: 'menit', roundingType: (x) => Math.floor(x)}, 
+        {timeType: 'jam', roundingType: (x) => Math.floor(x)}, 
+        {timeType: 'hari', roundingType: (x) => Math.floor(x)}, 
+        {timeType: 'minggu', roundingType: (x) => Math.round(x)}, 
+        {timeType: 'minggu', roundingType: null}
+      ]
+      let difference = (Date.now() - new Date(datetime).getTime()) / 1000
+      console.log(difference)
+      for (let i = 0; i < dividers.length; i++) {
+        if (difference > dividers[i]) {
+          if (i === dividers.length - 1) difference = `>3 ${timeTypes[i].timeType} yang lalu`
+          else difference /= dividers[i]
+        }
+        else {
+          difference = `${timeTypes[i].roundingType(difference)} ${timeTypes[i].timeType} yang lalu`
+          break
+        }
+        console.log(i, difference)
+      }
+      return difference
+    }
     return (
       <main className='flex flex-auto flex-col items-center font-inter break-all xs:break-normal'>
-        <Dashboard session={session} signOut={signOut} title="115 | Dashboard">
-          <div className='flex justify-around items-center text-sm font-medium'>
-            <Link href=''>
-              <a className='flex flex-auto justify-center text-white p-4 hover:text-gray-50'>
-                Pengumuman Anda
-              </a>
-            </Link>
-            <Link href='/pengumuman'>
-              <a className='flex flex-auto justify-center text-white p-4 hover:text-gray-50'>
-                Ujian Anda
-              </a>
-            </Link>
-          </div>
-        </Dashboard>
-        <div className="flex-auto w-full flex flex-row align-top divide-x-2 divide-green-500 bg-[#072713]">
-          <div id="pengumuman" className="flex-auto flex flex-col">
-            <h1 className='flex flex-none justify-center p-4 bg-green-600 text-white font-bold drop-shadow-sm cursor-default'>
-              Pengumuman Anda
-            </h1>
-            <Link href="/teacher/pengumuman/create">
-              <a className="flex justify-center p-3 m-3 gap-x-1.5 bg-green-600 hover:bg-green-700 text-white rounded-md">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3.25}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-                </svg>
-                <h4 className="text-sm font-semibold">
-                  Buat pengumuman baru
-                </h4>
-              </a>
-            </Link>
-            {announcements.map(announcement => (
-              <Link href="/teacher/pengumuman/[id]/edit" as={`/teacher/pengumuman/${announcement.id}/edit`} key={announcement.id}>
-                <a className="m-3 p-3 rounded-xl bg-[#fdfdfd] text-zinc-900 drop-shadow-xl">
-                  <h1 className="text-3xl italic">
-                    {announcement.title}
-                  </h1>
-                </a>
-              </Link>
-            ))}
-          </div>
-          <div id="ujian" className="flex-auto flex flex-col">
-            <h1 className='flex flex-none justify-center p-4 bg-green-600 text-white font-bold drop-shadow-sm cursor-default -z-[1]'>
-              Ujian Anda
-            </h1>
-            <a
-              className="flex justify-center p-3 m-3 gap-x-1.5 bg-green-600 hover:bg-green-700 text-white rounded-md"
-              onClick={() => window.open('/teacher/ujian/create', '_blank')}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3.25}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-              </svg>
-              <h4 className="text-sm font-semibold">
-                Buat ujian baru
-              </h4>
-            </a>
+        <div className="w-full flex-auto flex justify-center bg-gradient-to-t from-black/95 to-slate-900 text-white/90">
+          <div className="w-full flex divide-x-2 divide-slate-800/50">
+            <div id="ujian" className="w-1/2 flex flex-col p-4">
+              <div className="flex justify-center gap-3 items-center text-2xl font-bold">
+                <h1>
+                  Ujian Terkini
+                </h1>
+                <Link href="/teacher/ujian/create">
+                  <a className="px-2 bg-blue-700 hover:bg-blue-800 rounded-full">
+                    +
+                  </a>
+                </Link>
+              </div>
+            </div>
+            <div id="pengumuman" className="w-1/2 flex flex-col p-4">
+              <div className="flex justify-center gap-3 items-center text-2xl font-bold">
+                <h1>
+                  Pengumuman Terkini
+                </h1>
+                <Link href="/teacher/pengumuman/create">
+                  <a className="px-2 bg-blue-700 hover:bg-blue-800 rounded-full">
+                    +
+                  </a>
+                </Link>
+              </div>
+              {announcements.map(announcement => (
+                <Link href="/teacher/pengumuman/[id]/edit" as={`/teacher/pengumuman/${announcement.id}/edit`} key={announcement.id}>
+                  <a className="pointer-events-none flex justify-between items-center m-3 px-3 py-2 bg-slate-50 text-black/90 rounded-lg">
+                    <h1 className="truncate w-1/2 text-lg pointer-events-auto px-4 py-3 bg-blue-700 hover:bg-blue-800 text-white/95 font-bold rounded-md">
+                      {announcement.title}
+                    </h1>
+                    <time className="font-semibold">
+                      {datetimeToString(announcement.updatedAt)}
+                    </time>
+                  </a>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </main>
@@ -77,7 +84,12 @@ export async function getServerSideProps({ req, res }) {
   const userAnnouncements = await prisma.announcement.findMany({
     where: {
       userId: session.id
-    }
+    },
+    orderBy: [
+      {
+        updatedAt: 'desc'
+      }
+    ]
   })
   return {
     props: {

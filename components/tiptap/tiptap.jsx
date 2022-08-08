@@ -189,13 +189,13 @@ export const MenuButtons = ({ editor, children }) => {
             setTextStyle(value)
             toggleTextStyle(value)
           }}>
-            <option value="" disabled>Style text</option>
+            <option value="" disabled>Mode teks</option>
             <option
               onClick={() => editor.chain().focus().setParagraph().run()}
               className={`text-lg ${editor.isActive('paragraph') ? 'is-active' : ''}`}
               value="p"
             >
-              Normal text
+              Teks normal
             </option>
             <option
               onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}

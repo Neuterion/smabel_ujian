@@ -40,7 +40,8 @@ model Session {
 model User {
   id            String    @id
   password      String
-  name          String?
+  name          String
+  gender        String?
   isTeacher     Boolean
   email         String?   @unique
   emailVerified DateTime?
@@ -59,15 +60,19 @@ model VerificationToken {
 }
 
 model Announcement {
-  id          Int   @id @default(autoincrement())
-  title       String 
-  content     String   @default("")
-  createdAt   DateTime
-  updatedAt   DateTime
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id            Int       @id @default(autoincrement())
+  title         String 
+  content       String    @default("")
+  createdAt     DateTime
+  updatedAt     DateTime
+  clicks        Int?      @default(0)
+  audienceGrade String?   @default("") // '7' for 7th, '8' for 8th, '9' for 9th, and so on.. ('78' for 7-8th, '789' for 7-9th, etc)
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+
+// Exam models
 model Exam {
   id          String    @id @default(cuid())
   title       String

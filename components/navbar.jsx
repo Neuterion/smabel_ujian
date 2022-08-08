@@ -1,20 +1,25 @@
 import { useState } from 'react'
 
-import Head from "next/head"
+import Link from 'next/link'
 import Image from 'next/future/image'
+
+import { useSession, signOut } from 'next-auth/react'
 
 import Logo from '../public/logo.webp'
 
-export default function Dashboard({ session, signOut, title, children }) {
+export default function Navbar() {
+  const { data: session } = useSession()
   const [hidden, setHidden] = useState(true)
+  if (session) {
   return (
-    <div className='flex flex-col items-center justify-center w-full bg-green-500 drop-shadow-sm'>
-      <Head>
-        <title>{title}</title>
-      </Head>
+    <nav className='sticky flex flex-col items-center justify-center w-full bg-green-500 drop-shadow-md'>
       <div className='flex w-full justify-between items-center py-2 px-4 text-white'>
-        <Image src={Logo} alt="Logo" width={64} height={64} />
-        { children }
+        <Link href="/">
+          <a>
+            <Image src={Logo} alt="Logo" width={64} height={64} priority />
+          </a>
+        </Link>
+        {session.isTeacher ? <TeacherNavbarChildren /> : <StudentNavbarChildren />}
         <div className='relative inline-block text-left'>
           <div>
             <button onClick={() => setHidden(!hidden)} type="button" className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500" id="menu-button" aria-expanded="true" aria-haspopup="true">
@@ -34,6 +39,31 @@ export default function Dashboard({ session, signOut, title, children }) {
           </div>
         </div>
       </div>
+    </nav>
+  )
+  }
+}
+
+const StudentNavbarChildren = () => {
+  return (
+    <div className='flex justify-around items-center text-sm font-medium'>
+      <Link href=''>
+        <a className='flex flex-auto justify-center text-white p-4 hover:text-gray-50'>
+          Ujian Sekolah
+        </a>
+      </Link>
+      <a href="/pengumuman" className='flex flex-auto justify-center text-white p-4 hover:text-gray-50'>
+        Pengumuman Sekolah
+      </a>
+      <Link href=''>
+        <a className='flex flex-auto justify-center text-white p-4 hover:text-gray-50'>
+          Hasil Ujian
+        </a>
+      </Link>
     </div>
   )
+}
+
+const TeacherNavbarChildren = () => {
+  return null
 }

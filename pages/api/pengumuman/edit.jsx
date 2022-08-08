@@ -4,6 +4,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(401).redirect('/')
 
   // Get data submitted in request's body.
+  console.log(req)
   const body = req.body
   
   // Create a new Pengumuman
@@ -17,6 +18,5 @@ export default async function handler(req, res) {
       updatedAt: new Date(body.editDate),
     }
   })
-
-  if (pengumuman) return res.redirect(302, `/teacher/pengumuman/${pengumuman.id}/edit`)
+  if (pengumuman) return res.redirect(302, `/teacher/pengumuman/${body.id}/edit`)
 }

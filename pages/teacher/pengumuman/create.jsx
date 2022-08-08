@@ -1,9 +1,13 @@
 import Head from 'next/head'
+import Link from 'next/link'
 
 import React, { useState, useRef } from 'react'
 
 import { EditorContent, useEditor } from '@tiptap/react'
 import { TiptapTemplate, MenuBarStyles, MenuButtons, EditorConfig, EditorContentStyles } from '../../../components/tiptap/tiptap'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHouse } from '@fortawesome/free-solid-svg-icons'
 
 export default function CreateAnnouncement() {
   EditorConfig['autofocus'] = true
@@ -32,7 +36,10 @@ export default function CreateAnnouncement() {
       <Head>
         <title>115 | Buat Pengumuman</title>
       </Head>
-      <form ref={formRef} action="/api/pengumuman/create" method="post" onSubmit={(e) => e.preventDefault()} className="flex-auto w-full flex overflow-y-auto">
+      <Link href="/teacher/dashboard">
+        <FontAwesomeIcon icon={faHouse} className="absolute top-0 left-0 pt-3 pl-3 pb-6 pr-6 text-3xl rounded-br-full text-white bg-slate-800 hover:bg-slate-900 drop-shadow-lg cursor-pointer" />
+      </Link>
+      <form ref={formRef} action="/api/pengumuman/create" method="post" onSubmit={(e) => e.preventDefault()} className="will-change-auto flex-auto w-full flex overflow-y-auto">
         <TiptapTemplate>
           <div className="flex flex-col w-full bg-slate-100">
             <input
@@ -42,7 +49,7 @@ export default function CreateAnnouncement() {
             />
             <div className={`${MenuBarStyles} items-center content-center`}>
               <MenuButtons editor={editor}>
-                <button onClick={handleSubmit} className="px-4 py-2 text-lg font-bold bg-green-400 hover:bg-green-500 text-white rounded-md">
+                <button onClick={handleSubmit} className="px-4 py-2 text-lg font-semibold bg-green-600 hover:bg-green-500 text-white rounded-md">
                   Buat
                 </button>
               </MenuButtons>

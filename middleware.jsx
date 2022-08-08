@@ -19,5 +19,6 @@ export const config = {
     '/student/:path*',
     '/teacher/:path*',
     '/dashboard',
+    '/pengumuman/:path*'
   ]
 }
