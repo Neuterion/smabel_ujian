@@ -14,7 +14,7 @@ export default function Navbar() {
   return (
     <nav className='sticky flex flex-col items-center justify-center w-full bg-green-500 drop-shadow-md'>
       <div className='flex w-full justify-between items-center py-2 px-4 text-white'>
-        <Link href="/">
+        <Link href={session.isTeacher ? "/teacher/dashboard" : "/student/dashboard"}>
           <a>
             <Image src={Logo} alt="Logo" width={64} height={64} priority />
           </a>
@@ -48,15 +48,15 @@ const StudentNavbarChildren = () => {
   return (
     <div className='flex justify-around items-center text-sm font-medium'>
       <Link href=''>
-        <a className='flex flex-auto justify-center text-white p-4 hover:text-gray-50'>
+        <a className='flex flex-auto justify-center text-white p-4 hover:text-gray-50 hover:underline'>
           Ujian Sekolah
         </a>
       </Link>
-      <a href="/pengumuman" className='flex flex-auto justify-center text-white p-4 hover:text-gray-50'>
+      <a href="/pengumuman" className='flex flex-auto justify-center text-white p-4 hover:text-gray-50 hover:underline'>
         Pengumuman Sekolah
       </a>
       <Link href=''>
-        <a className='flex flex-auto justify-center text-white p-4 hover:text-gray-50'>
+        <a className='flex flex-auto justify-center text-white p-4 hover:text-gray-50 hover:underline'>
           Hasil Ujian
         </a>
       </Link>

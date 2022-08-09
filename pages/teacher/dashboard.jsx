@@ -18,7 +18,6 @@ export default function TeacherDashboard({ userAnnouncements: announcements }) {
         {timeType: 'minggu', roundingType: null}
       ]
       let difference = (Date.now() - new Date(datetime).getTime()) / 1000
-      console.log(difference)
       for (let i = 0; i < dividers.length; i++) {
         if (difference > dividers[i]) {
           if (i === dividers.length - 1) difference = `>3 ${timeTypes[i].timeType} yang lalu`
@@ -28,7 +27,6 @@ export default function TeacherDashboard({ userAnnouncements: announcements }) {
           difference = `${timeTypes[i].roundingType(difference)} ${timeTypes[i].timeType} yang lalu`
           break
         }
-        console.log(i, difference)
       }
       return difference
     }

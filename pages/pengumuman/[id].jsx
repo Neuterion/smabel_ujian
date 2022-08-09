@@ -4,7 +4,7 @@ import { EditorContentStyles } from '../../components/tiptap/tiptap'
 import Head from 'next/head'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faArrowPointer } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faEye } from '@fortawesome/free-solid-svg-icons'
 
 export default function AnnouncementDisplay({ announcement }) {
   const title = `115 | ${announcement.title}`
@@ -36,10 +36,10 @@ export default function AnnouncementDisplay({ announcement }) {
               null
             }
           </time>
-          {/* <section>
-            <FontAwesomeIcon icon={faArrowPointer} className="text-lg" />
-            {announcement.clicks}
-          </section> */}
+          <section className="text-xs">
+            <FontAwesomeIcon icon={faEye} /> {" "}
+            {announcement.clicks}x dibaca
+          </section>
         </header>
         <main>
           <h1 className="text-7xl font-inter mt-7">
@@ -79,15 +79,6 @@ export async function getStaticProps({ params }) {
       user: true
     }
   })
-  // Update amount of clicks
-  // await prisma.announcement.update({
-  //   where: {
-  //     id: Number(params.id)
-  //   },
-  //   data: {
-  //     clicks: announcement.clicks + 1
-  //   }
-  // })
 
   const toLocaleStringOptions = {
     day: 'numeric',

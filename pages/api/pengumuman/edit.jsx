@@ -4,19 +4,26 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(401).redirect('/')
 
   // Get data submitted in request's body.
-  console.log(req)
-  const body = req.body
+  // console.log(req)
+  const body = JSON.parse(req.body)
   
   // Create a new Pengumuman
-  const pengumuman = await prisma.announcement.update({
+  const announcement = await prisma.announcement.update({
     where: {
-      id: Number(body.id)
+      id: body.id
     },
     data: {
       title: body.title,
       content: body.content,
       updatedAt: new Date(body.editDate),
+      audienceGrade: body.audienceGrade
     }
   })
-  if (pengumuman) return res.redirect(302, `/teacher/pengumuman/${body.id}/edit`)
+  if (announcement) {
+    res.status = 200
+    res.end(JSON.stringify({
+      updatedContent: announcement.content,
+      updatedAudienceGrade: announcement.audienceGrade
+    }))
+  }
 }

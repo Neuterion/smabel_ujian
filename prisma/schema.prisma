@@ -66,7 +66,7 @@ model Announcement {
   createdAt     DateTime
   updatedAt     DateTime
   clicks        Int?      @default(0)
-  audienceGrade String?   @default("") // '7' for 7th, '8' for 8th, '9' for 9th, and so on.. ('78' for 7-8th, '789' for 7-9th, etc)
+  audienceGrade String    @default("") // '7' for 7th, '8' for 8th, '9' for 9th, and so on.. ('78' for 7-8th, '789' for 7-9th, etc)
   userId        String
   user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
