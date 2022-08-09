@@ -11,10 +11,6 @@ import { faUser } from '@fortawesome/free-solid-svg-icons'
 
 export default function AnnouncementsDisplay({ newestAnnouncements, mostPopularAnnouncements }) {
   const announcementRefs = {}
-  const useNewAnnouncementRef = (id, clicks) => {
-    announcementRefs[id] = useRef(clicks)
-    return announcementRefs[id] 
-  }
   return (
     <main className="flex-auto flex flex-col items-center bg-slate-100">
       <Head>
@@ -30,7 +26,7 @@ export default function AnnouncementsDisplay({ newestAnnouncements, mostPopularA
           </h3>
           <section className="w-full flex gap-x-6">
             {newestAnnouncements.map((announcement) => {
-              useNewAnnouncementRef(announcement.id, announcement.clicks)
+              announcementRefs[id] = useRef(clicks)
               return (
                 <div key={announcement.id} className="flex flex-col bg-white p-6 rounded-lg drop-shadow-xl">
                   <Link href="/pengumuman/[id]" as={`/pengumuman/${announcement.id}`}>
@@ -92,7 +88,7 @@ export default function AnnouncementsDisplay({ newestAnnouncements, mostPopularA
           </h3>
           <section className="w-full flex gap-x-6">
             {mostPopularAnnouncements.map((announcement) => {
-              useNewAnnouncementRef(announcement.id, announcement.clicks)
+              announcementRefs[id] = useRef(clicks)
               return (
                 <div key={announcement.id} className="flex flex-col bg-white p-6 rounded-lg drop-shadow-xl">
                   <Link href="/pengumuman/[id]" as={`/pengumuman/${announcement.id}`}>
