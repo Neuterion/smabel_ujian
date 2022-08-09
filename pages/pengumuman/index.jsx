@@ -11,7 +11,7 @@ import { faUser } from '@fortawesome/free-solid-svg-icons'
 
 export default function AnnouncementsDisplay({ newestAnnouncements, mostPopularAnnouncements }) {
   const announcementRefs = {}
-  const addNewAnnouncementRef = (id, clicks) => {
+  const useNewAnnouncementRef = (id, clicks) => {
     announcementRefs[id] = useRef(clicks)
     return announcementRefs[id] 
   }
@@ -30,7 +30,7 @@ export default function AnnouncementsDisplay({ newestAnnouncements, mostPopularA
           </h3>
           <section className="w-full flex gap-x-6">
             {newestAnnouncements.map((announcement) => {
-              addNewAnnouncementRef(announcement.id, announcement.clicks)
+              useNewAnnouncementRef(announcement.id, announcement.clicks)
               return (
                 <div key={announcement.id} className="flex flex-col bg-white p-6 rounded-lg drop-shadow-xl">
                   <Link href="/pengumuman/[id]" as={`/pengumuman/${announcement.id}`}>
@@ -75,7 +75,7 @@ export default function AnnouncementsDisplay({ newestAnnouncements, mostPopularA
                     </div>
                     <section className="flex gap-1 justify-evenly">
                       {announcement.audienceGrade.split('').map((grade) => (
-                        <h5 className="bg-lime-50 px-2 py-1 rounded-xl text-xs text-lime-600">
+                        <h5 key={announcement.id} className="bg-lime-50 px-2 py-1 rounded-xl text-xs text-lime-600">
                           #kelas{grade}
                         </h5>
                       ))}
@@ -92,7 +92,7 @@ export default function AnnouncementsDisplay({ newestAnnouncements, mostPopularA
           </h3>
           <section className="w-full flex gap-x-6">
             {mostPopularAnnouncements.map((announcement) => {
-              addNewAnnouncementRef(announcement.id, announcement.clicks)
+              useNewAnnouncementRef(announcement.id, announcement.clicks)
               return (
                 <div key={announcement.id} className="flex flex-col bg-white p-6 rounded-lg drop-shadow-xl">
                   <Link href="/pengumuman/[id]" as={`/pengumuman/${announcement.id}`}>
@@ -137,7 +137,7 @@ export default function AnnouncementsDisplay({ newestAnnouncements, mostPopularA
                     </div>
                     <section className="flex gap-1 justify-evenly">
                       {announcement.audienceGrade.split('').map((grade) => (
-                        <h5 className="bg-lime-50 px-2 py-1 rounded-xl text-xs text-lime-600">
+                        <h5 key={announcement.id} className="bg-lime-50 px-2 py-1 rounded-xl text-xs text-lime-600">
                           #kelas{grade}
                         </h5>
                       ))}
