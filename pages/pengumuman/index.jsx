@@ -1,8 +1,6 @@
 import Link from 'next/link'
 import Head from 'next/head'
 
-import { useRef } from 'react'
-
 import { prisma } from '../../lib/prisma'
 import { EditorContentStyles } from '../../components/tiptap/tiptap'
 
@@ -10,7 +8,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 
 export default function AnnouncementsDisplay({ newestAnnouncements, mostPopularAnnouncements }) {
-  const announcementRefs = {}
   return (
     <main className="flex-auto flex flex-col items-center bg-slate-100">
       <Head>
@@ -26,7 +23,6 @@ export default function AnnouncementsDisplay({ newestAnnouncements, mostPopularA
           </h3>
           <section className="w-full flex gap-x-6">
             {newestAnnouncements.map((announcement) => {
-              announcementRefs[id] = useRef(clicks)
               return (
                 <div key={announcement.id} className="flex flex-col bg-white p-6 rounded-lg drop-shadow-xl">
                   <Link href="/pengumuman/[id]" as={`/pengumuman/${announcement.id}`}>
@@ -38,7 +34,7 @@ export default function AnnouncementsDisplay({ newestAnnouncements, mostPopularA
                             clicks: announcement.clicks
                           })
                         })
-                        announcementRefs[announcement.id].current = updatedClicks
+                        announcement.clicks = updatedClicks
                       }}
                       className="flex-auto font-inter text-3xl hover:underline"
                     >
@@ -65,7 +61,7 @@ export default function AnnouncementsDisplay({ newestAnnouncements, mostPopularA
                           </h5>
                         }
                         <section className="text-xs">
-                          {announcementRefs[announcement.id].current}x dibaca
+                          {announcement.clicks}x dibaca
                         </section>
                       </div>
                     </div>
@@ -88,7 +84,6 @@ export default function AnnouncementsDisplay({ newestAnnouncements, mostPopularA
           </h3>
           <section className="w-full flex gap-x-6">
             {mostPopularAnnouncements.map((announcement) => {
-              announcementRefs[id] = useRef(clicks)
               return (
                 <div key={announcement.id} className="flex flex-col bg-white p-6 rounded-lg drop-shadow-xl">
                   <Link href="/pengumuman/[id]" as={`/pengumuman/${announcement.id}`}>
@@ -100,7 +95,7 @@ export default function AnnouncementsDisplay({ newestAnnouncements, mostPopularA
                             clicks: announcement.clicks
                           })
                         })
-                        announcementRefs[announcement.id].current = updatedClicks
+                        announcement.clicks = updatedClicks
                       }}
                       className="flex-auto font-inter text-3xl hover:underline"
                     >
@@ -127,7 +122,7 @@ export default function AnnouncementsDisplay({ newestAnnouncements, mostPopularA
                           </h5>
                         }
                         <section className="text-xs">
-                          {announcementRefs[announcement.id].current}x dibaca
+                          {announcement.clicks}x dibaca
                         </section>
                       </div>
                     </div>
