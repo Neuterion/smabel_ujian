@@ -23,7 +23,7 @@ export default function EditAnnouncement({ announcement }) {
   // Audience grade form
   const audienceGradeForm = useRef()
   const audienceGrades = {}
-  for (const char of announcement.audienceGrade) {
+  for (const char of announcement.audienceGrade.split('')) {
     audienceGrades[char] = true
   }
   const grade7 = useRef()
