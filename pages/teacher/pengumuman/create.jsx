@@ -12,8 +12,6 @@ import { faCaretLeft, faCaretRight, faUserGraduate } from '@fortawesome/free-sol
 export default function CreateAnnouncement() {
   const router = useRouter()
 
-  EditorConfig['autofocus'] = true
-  EditorConfig['content'] = ''
   const editor = useEditor(EditorConfig)
 
   // Setting document title state

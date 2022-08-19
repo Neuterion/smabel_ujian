@@ -125,8 +125,11 @@ export const EditorConfig = {
     TextAlign.configure({
       types: ['heading', 'paragraph'],
     })
-  ]
+  ],
+  autofocus: true,
+  content: ''
 }
+
 
 export const MenuButtons = ({ editor, children }) => {
   const [textStyle, setTextStyle] = useState('') // -> toggleTextStyle()
@@ -346,5 +349,91 @@ export default function Tiptap() {
       <EditorContentStyles />
       <EditorContent editor={editor} />
     </TiptapTemplate>
+  )
+}
+
+export function Question() {
+  const editor = useEditor(EditorConfig)
+  return (
+    <div className="flex-auto flex overflow-x-auto" spellCheck="false">
+      <div className={MenuBarStyles}>
+        <QuestionMenuButtons editor={editor} />
+      </div>
+      <EditorContentStyles />
+      <EditorContent editor={editor} />
+    </div>
+  )
+}
+
+export const QuestionMenuButtons = ({ editor, children }) => {
+  const uploadImage = useRef(null) // -> toggleImageUpload()
+
+  if (!editor) return null
+
+  const toggleImageUpload = (e) => {
+    const files = e.target.files
+    if (files.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i]
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          const src = e.target.result
+          editor.commands.setImage({ src })
+          editor.commands.createParagraphNear()
+        }
+        reader.readAsDataURL(file)
+      }
+    }
+  }
+  return (
+    <>
+      <div id="text-style" className="flex flex-row flex-wrap">
+        <button
+          onClick={() => editor.chain().focus().toggleBold().run()}
+          className={`p-2 ${editor.isActive('bold') ? 'is-active bg-slate-300' : 'hover:bg-slate-200'}`}
+        >
+          <FontAwesomeIcon icon={faBold} />
+        </button>
+        <button
+          onClick={() => editor.chain().focus().toggleItalic().run()}
+          className={`p-2 ${editor.isActive('italic') ? 'is-active bg-slate-300' : 'hover:bg-slate-200'}`}
+        >
+          <FontAwesomeIcon icon={faItalic} />
+        </button>
+        <button
+          onClick={() => editor.chain().focus().toggleStrike().run()}
+        className={`p-2 ${editor.isActive('strike') ? 'is-active bg-slate-300' : 'hover:bg-slate-200'}`}
+        >
+          <FontAwesomeIcon icon={faStrikethrough} />
+        </button>
+        <button
+          onClick={() => editor.chain().focus().toggleCode().run()}
+          className={`p-2 ${editor.isActive('code') ? 'is-active bg-slate-300' : 'hover:bg-slate-200'}`}
+        >
+          <FontAwesomeIcon icon={faCode} />
+        </button>
+      </div>
+      <div id="upload-image" className="flex flex-row flex-wrap">
+        <input type="file" accept="image/*" className="hidden" multiple ref={uploadImage} onChange={toggleImageUpload} />
+        <div onClick = {() => uploadImage.current.click()} className="flex items-center p-2 hover:bg-slate-200 active:bg-slate-300">
+          <FontAwesomeIcon icon={faImage} />
+        </div>
+      </div>
+      <div id="misc" className="flex flex-row flex-wrap">
+        <button
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          className={`p-2 ${editor.isActive('bulletList') ? 'is-active bg-slate-300' : 'hover:bg-slate-200'}`}
+        >
+          <FontAwesomeIcon icon={faListUl} />
+        </button>
+        <button
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          className={`p-2 ${editor.isActive('orderedList') ? 'is-active bg-slate-300' : 'hover:bg-slate-200'}`}
+        >
+          <FontAwesomeIcon icon={faListOl} />
+        </button>
+      </div>
+      { children }
+    </>
   )
 }

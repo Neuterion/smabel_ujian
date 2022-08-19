@@ -169,6 +169,7 @@ export async function getStaticProps() {
   }
   const tidyData = (announcement) => {
     announcement.author = announcement.user.gender === 'm' ? `Pak ${announcement.user.name}` : `Bu ${announcement.user.name}`
+    if (announcement.title.replace(' ', '').length > 10) announcement.title = announcement.title.substring(0, 10) + '...'
     if (announcement.content.length > 40) announcement.content = announcement.content.substring(0, 40) + '...'
     announcement.createdAt = new Date(announcement.createdAt).toLocaleString('id-ID', toLocaleStringOptions)
     announcement.updatedAt = new Date(announcement.updatedAt).toLocaleString('id-ID', toLocaleStringOptions)

@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Exam" ADD COLUMN "duration" INTEGER;
+ALTER TABLE "Exam" ADD COLUMN "grade" INTEGER;
+ALTER TABLE "Exam" ADD COLUMN "subject" TEXT;

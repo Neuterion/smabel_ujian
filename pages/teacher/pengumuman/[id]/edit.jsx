@@ -85,7 +85,6 @@ export default function EditAnnouncement({ announcement }) {
   }
 
 
-  EditorConfig['autofocus'] = true
   EditorConfig['content'] = announcement.content
   const editor = useEditor(EditorConfig)
   

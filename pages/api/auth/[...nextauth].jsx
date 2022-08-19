@@ -4,7 +4,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { prisma } from '../../../lib/prisma'
 
-export default NextAuth({
+export const authOptions = {
   adapters: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
@@ -70,4 +70,6 @@ export default NextAuth({
     secret: process.env.NEXTAUTH_SECRET,
     maxAge: 7 * 24 * 60 * 60
   }
-})
+}
+
+export default NextAuth(authOptions)

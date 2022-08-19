@@ -4,8 +4,8 @@ import Link from 'next/link'
 
 import { prisma } from '../../lib/prisma'
 
-export default function TeacherDashboard({ userAnnouncements: announcements }) {
-  const { data: session, status } = useSession()
+export default function TeacherDashboard({ userAnnouncements: announcements, userExams: exams }) {
+  const { status } = useSession()
   if (status === 'authenticated') {
     const datetimeToString = (datetime) => {
       const dividers = [60, 60, 24, 7, 3, 1]
@@ -39,35 +39,39 @@ export default function TeacherDashboard({ userAnnouncements: announcements }) {
                 <h1>
                   Ujian Terkini
                 </h1>
-                <Link href="/teacher/ujian/create">
-                  <a className="px-2 bg-blue-700 hover:bg-blue-800 rounded-full">
-                    +
-                  </a>
-                </Link>
+                <a href="/teacher/ujian/create" className="px-2 bg-blue-700 hover:bg-blue-800 rounded-full">
+                  +
+                </a>
               </div>
+              {exams.map(exam => (
+                <a href={`/teacher/ujian/${exam.id}/edit`} className="pointer-events-none flex justify-between items-center m-3 px-3 py-2 bg-slate-50 text-black/90 rounded-lg">
+                  <h1 className="truncate w-1/2 text-lg pointer-events-auto px-4 py-3 bg-blue-700 hover:bg-blue-800 text-white/95 font-bold rounded-md">
+                    {exam.name}
+                  </h1>
+                  <time className="font-semibold">
+                    {datetimeToString(exam.updatedAt)}
+                  </time>
+                </a>
+              ))}
             </div>
             <div id="pengumuman" className="w-1/2 flex flex-col p-4">
               <div className="flex justify-center gap-3 items-center text-2xl font-bold">
                 <h1>
                   Pengumuman Terkini
                 </h1>
-                <Link href="/teacher/pengumuman/create">
-                  <a className="px-2 bg-blue-700 hover:bg-blue-800 rounded-full">
-                    +
-                  </a>
-                </Link>
+                <a href="/teacher/pengumuman/create" className="px-2 bg-blue-700 hover:bg-blue-800 rounded-full">
+                  +
+                </a>
               </div>
               {announcements.map(announcement => (
-                <Link href="/teacher/pengumuman/[id]/edit" as={`/teacher/pengumuman/${announcement.id}/edit`} key={announcement.id}>
-                  <a className="pointer-events-none flex justify-between items-center m-3 px-3 py-2 bg-slate-50 text-black/90 rounded-lg">
-                    <h1 className="truncate w-1/2 text-lg pointer-events-auto px-4 py-3 bg-blue-700 hover:bg-blue-800 text-white/95 font-bold rounded-md">
-                      {announcement.title}
-                    </h1>
-                    <time className="font-semibold">
-                      {datetimeToString(announcement.updatedAt)}
-                    </time>
-                  </a>
-                </Link>
+                <a href={`/teacher/pengumuman/${announcement.id}/edit`} className="pointer-events-none flex justify-between items-center m-3 px-3 py-2 bg-slate-50 text-black/90 rounded-lg">
+                  <h1 className="truncate w-1/2 text-lg pointer-events-auto px-4 py-3 bg-blue-700 hover:bg-blue-800 text-white/95 font-bold rounded-md">
+                    {announcement.title}
+                  </h1>
+                  <time className="font-semibold">
+                    {datetimeToString(announcement.updatedAt)}
+                  </time>
+                </a>
               ))}
             </div>
           </div>
@@ -89,9 +93,20 @@ export async function getServerSideProps({ req, res }) {
       }
     ]
   })
+  const userExams = await prisma.exam.findMany({
+    where: {
+      userId: session.id
+    },
+    orderBy: [
+      {
+        updatedAt: 'desc'
+      }
+    ]
+  })
   return {
     props: {
-      userAnnouncements: JSON.parse(JSON.stringify(userAnnouncements))
+      userAnnouncements: JSON.parse(JSON.stringify(userAnnouncements)),
+      userExams: JSON.parse(JSON.stringify(userExams))
     }
   }
 }

@@ -75,7 +75,10 @@ model Announcement {
 // Exam models
 model Exam {
   id          String    @id @default(cuid())
-  title       String
+  name        String
+  duration    Int
+  grade       Int
+  subject     String
   questions   Question[]
   createdAt   DateTime
   updatedAt   DateTime
@@ -84,7 +87,7 @@ model Exam {
 }
 
 model Question {
-  id          String   @id @default(cuid())
+  order       Int
   question    String
   choices     Choice[]
   createdAt   DateTime
@@ -99,6 +102,6 @@ model Choice {
   isCorrect   Boolean
   createdAt   DateTime
   updatedAt   DateTime
-  questionId  String
-  question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId  Int
+  question    Question @relation(fields: [questionId], references: [order], onDelete: Cascade)
 }
