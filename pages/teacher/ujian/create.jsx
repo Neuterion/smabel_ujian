@@ -2,23 +2,12 @@ import Head from 'next/head'
 import { useRef } from 'react'
 
 export default function CreateExam() {
-  const testNameLabel = useRef()
-  const testGradeLabel = useRef()
-
-  const testForm = useRef()
-
-  const moveLabelToTop = (e, ref) => {
+  const [testNameLabel, testGradeLabel] = [useRef(), useRef()]
+  const moveLabel = (e, ref) => {
     const label = ref.current
     if (e.target.value !== '') return
-    label.classList.add('-translate-y-[150%]')
-    label.classList.remove('text-gray-300')
-  }   
-
-  const moveLabelToBottom = (e, ref) => {
-    const label = ref.current
-    if (e.target.value !== '') return
-    label.classList.remove('-translate-y-[150%]')
-    label.classList.add('text-gray-300')
+    label.classList.toggle('-translate-y-[150%]')
+    label.classList.toggle('text-gray-300')
   }
   return (
     <main className="flex-auto grid place-items-center h-full bg-black/10">
@@ -29,12 +18,12 @@ export default function CreateExam() {
         <h1 className="pt-1 pb-4 text-3xl text-center font-semibold">
           Buat Ujian Baru
         </h1>
-        <form ref={testForm} action="/api/ujian/create" method="post" className="flex flex-col items-start gap-y-4">
+        <form action="/api/ujian/create" method="post" className="flex flex-col items-start gap-y-4">
           <div className="w-full relative">
             <input 
               required autoComplete="off" spellCheck="off" name="name" type="text"
-              onFocus={(e) => moveLabelToTop(e, testNameLabel)}
-              onBlur={(e) => moveLabelToBottom(e, testNameLabel)}
+              onFocus={(e) => moveLabel(e, testNameLabel)}
+              onBlur={(e) => moveLabel(e, testNameLabel)}
               className="w-full p-2 rounded-md outline-none bg-transparent border border-white" 
             />
             <label 
@@ -47,8 +36,8 @@ export default function CreateExam() {
           <div className="w-full relative">
             <input
               required name="duration" type="number"
-              onFocus={(e) => moveLabelToTop(e, testGradeLabel)}
-              onBlur={(e) => moveLabelToBottom(e, testGradeLabel)}
+              onFocus={(e) => moveLabel(e, testGradeLabel)}
+              onBlur={(e) => moveLabel(e, testGradeLabel)}
               className="w-full p-2 rounded-md outline-none bg-transparent border border-white" 
             />
             <label 
@@ -63,7 +52,7 @@ export default function CreateExam() {
             <h1 className="text-xl font-medium">
               Kelas yang Diuji
             </h1>
-            <select required defaultValue="default" name="grade" className="p-1 text-neutral-900 outlin-blue-500">
+            <select required defaultValue="default" name="grade" className="p-1 text-neutral-900 outline-blue-500">
               <option disabled value="default">Pilih kelas</option>
               <option value="7">Kelas 7</option>
               <option value="8">Kelas 8</option>

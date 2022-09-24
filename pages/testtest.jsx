@@ -1,9 +1,10 @@
-import { Question } from '../components/tiptap/tiptap'
+import { Question } from '../components/tiptap'
 
 export default () => {
   return (
-    <main>
-      <div className="border-2 border-slate-900 divide-y-2 divide-slate-900 w-5/12">
+    <main className="flex-auto m-5">
+      <div className="w-full flex flex-col gap-y-5">
+        <Question />
         <Question />
         <Question />
         <Question />

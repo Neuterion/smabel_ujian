@@ -44,6 +44,7 @@ export default function EditAnnouncement({ announcement }) {
     if (grade9.current.checked) newAudienceGrade += '9'
 
     if (titleInput.current.value !== announcement.title || editor.getHTML() !== announcement.content || announcement.audienceGrade !== newAudienceGrade) {
+      editButton.current.onClick = null
       editButton.current.textContent = '...'
       const res = await fetch('/api/pengumuman/edit', {
         method: 'POST',
@@ -56,7 +57,6 @@ export default function EditAnnouncement({ announcement }) {
         })
       })
       if (res.ok) {
-        editButton.current.onClick = null
         editButton.current.textContent = "✅"
         const { updatedContent, updatedAudienceGrade } = await res.json()
         announcement.content = updatedContent

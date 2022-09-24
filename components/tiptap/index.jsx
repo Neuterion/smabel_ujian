@@ -5,6 +5,8 @@ import Dropcursor from '@tiptap/extension-dropcursor'
 import Image from '@tiptap/extension-image'
 import TextAlign from '@tiptap/extension-text-align'
 
+import ImageResize from 'tiptap-imagresize'
+
 import React, { useState, useRef } from 'react'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -105,6 +107,9 @@ export function EditorContentStyles() {
         height: 0;
         pointer-events: none;
       }
+      .ProseMirror-focused {
+        outline: 1px solid black;
+      }
     `}</style>
   )
 }
@@ -162,13 +167,8 @@ export const MenuButtons = ({ editor, children }) => {
   }
   const toggleImageUpload = (e) => {
     const files = e.target.files
-    console.log(files)
     if (files.length > 0) {
       for (let i = 0; i < files.length; i++) {
-        const canvas = document.createElement('canvas')
-        const ctx = canvas.getContext('2d')
-
-
         const file = files[i]
         const reader = new FileReader()
         reader.onload = (e) => {
@@ -360,12 +360,17 @@ export default function Tiptap() {
 export function Question() {
   const editor = useEditor(EditorConfig)
   return (
-    <div className="flex-auto flex overflow-x-auto" spellCheck="false">
-      <div className={MenuBarStyles}>
-        <QuestionMenuButtons editor={editor} />
+    <div className="flex-auto flex flex-col overflow-x-auto border border-slate-900" spellCheck="false">
+      <div className="relative flex justify-between">
+        <div className="m-1">
+          <QuestionMenuButtons editor={editor} />
+        </div>
+        <input type="checkbox" className="absolute top-0 right-0 bottom-0 mr-2 w-8" />
       </div>
       <EditorContentStyles />
-      <EditorContent editor={editor} />
+      <div className="">
+        <EditorContent editor={editor} />
+      </div>
     </div>
   )
 }
@@ -377,22 +382,36 @@ export const QuestionMenuButtons = ({ editor, children }) => {
 
   const toggleImageUpload = (e) => {
     const files = e.target.files
+    console.log(files)
+
     if (files.length > 0) {
       for (let i = 0; i < files.length; i++) {
         const file = files[i]
+
+        // Convert file to Image object
+        const img = new Image()
+        i.src = e.target.result
+
+        // Resize image
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')
+        canvas.width = 400
+        canvas.height = 300
+        ctx.drawImage(img, 0, 0, 400, 300)
+
         const reader = new FileReader()
         reader.onload = (e) => {
           const src = e.target.result
           editor.commands.setImage({ src })
           editor.commands.createParagraphNear()
         }
-        reader.readAsDataURL(file)
+        reader.readAsDataURL(canvas.toDataURL())
       }
     }
   }
   return (
     <>
-      <div id="text-style" className="flex flex-row flex-wrap">
+      {/* <div id="text-style" className="flex flex-row flex-wrap">
         <button
           onClick={() => editor.chain().focus().toggleBold().run()}
           className={`p-2 ${editor.isActive('bold') ? 'is-active bg-slate-300' : 'hover:bg-slate-200'}`}
@@ -405,38 +424,12 @@ export const QuestionMenuButtons = ({ editor, children }) => {
         >
           <FontAwesomeIcon icon={faItalic} />
         </button>
-        <button
-          onClick={() => editor.chain().focus().toggleStrike().run()}
-        className={`p-2 ${editor.isActive('strike') ? 'is-active bg-slate-300' : 'hover:bg-slate-200'}`}
-        >
-          <FontAwesomeIcon icon={faStrikethrough} />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleCode().run()}
-          className={`p-2 ${editor.isActive('code') ? 'is-active bg-slate-300' : 'hover:bg-slate-200'}`}
-        >
-          <FontAwesomeIcon icon={faCode} />
-        </button>
-      </div>
+      </div> */}
       <div id="upload-image" className="flex flex-row flex-wrap">
         <input type="file" accept="image/*" className="hidden" multiple ref={uploadImage} onChange={toggleImageUpload} />
         <div onClick = {() => uploadImage.current.click()} className="flex items-center p-2 hover:bg-slate-200 active:bg-slate-300">
           <FontAwesomeIcon icon={faImage} />
         </div>
-      </div>
-      <div id="misc" className="flex flex-row flex-wrap">
-        <button
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={`p-2 ${editor.isActive('bulletList') ? 'is-active bg-slate-300' : 'hover:bg-slate-200'}`}
-        >
-          <FontAwesomeIcon icon={faListUl} />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          className={`p-2 ${editor.isActive('orderedList') ? 'is-active bg-slate-300' : 'hover:bg-slate-200'}`}
-        >
-          <FontAwesomeIcon icon={faListOl} />
-        </button>
       </div>
       { children }
     </>
