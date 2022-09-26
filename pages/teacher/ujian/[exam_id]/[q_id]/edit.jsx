@@ -8,17 +8,25 @@ import { faFloppyDisk, faGear, faTableCells, faPlus } from '@fortawesome/free-so
 
 import { useRef, useState } from 'react'
 
+import { EditorContent, useEditor } from '@tiptap/react'
+
+import { EditorConfig } from '../../../../../components/tiptap'
+import { ExamMenuButtons } from '../../../../../components/tiptap/exam'
+
 export default function EditExam({ exam, question }) {
+  // DATA
   exam = JSON.parse(exam)
   question = JSON.parse(question)
 
-  // To compare with the form settings on change
+  // SETTINGS - To compare with the form settings on change
   const { name, duration, grade, subject } = exam
   const initialSettings = {name, duration, grade, subject}
 
+  // SETTINGS - Settings menu refs/states
   const [testNameLabel, testGradeLabel, formRef, submitBtnRef] = [useRef(), useRef(), useRef(), useRef()]
   const [settingsHidden, setSettingsHidden] = useState(true)
 
+  // SETTINGS - Settings menu form text field animation on focus
   const moveLabelToTop = (e, ref) => {
     const label = ref.current
     if (e.target.value !== '') return
@@ -34,7 +42,8 @@ export default function EditExam({ exam, question }) {
     label.classList.add('text-gray-300')
   }
 
-  const handleSubmit = async (e, formRef) => {
+  // SETTINGS - Handle settings when changed
+  const handleSettingChange = async (e, formRef) => {
     e.preventDefault()
 
     // Get the form data
@@ -75,8 +84,18 @@ export default function EditExam({ exam, question }) {
       }, 1000)
     }
   }
+
+  // QUESTION - Question/choices refs
+  
+
+  // QUESTION - Handle question & choices when changed
+  const handleQuestionChange = async (e) => {
+    // gather data & submit (unoptimized)
+
+  }
+
   return (
-    <main>
+    <main className="flex-auto flex flex-col h-[100vh]">
       <Head>
         <title>115 | Edit Ujian</title>
       </Head>
@@ -125,18 +144,6 @@ export default function EditExam({ exam, question }) {
           </button>
         </div>
       </nav>
-      <article className="flex justify-evenly">
-        <section>
-          {question.question}
-        </section>
-        <section>
-          {question.choices.map((choice) => (
-            <h1 key={choice.id}>
-              {choice.choice}
-            </h1>
-          ))}
-        </section>
-      </article>
       <div id="settings" className={`${settingsHidden ? 'hidden' : ''} absolute grid place-items-center inset-0 bg-black/50 z-50`}>
         <div className="relative w-[50vmin] p-6 rounded-lg font-inter bg-emerald-900 text-white shadow-xl shadow-emerald-900/50">
           <button id="closeSettings" onClick={() => setSettingsHidden(true)} className="absolute -top-7 -right-6 text-2xl font-bold">
@@ -145,7 +152,7 @@ export default function EditExam({ exam, question }) {
           <h1 className="pt-1 pb-4 text-3xl text-center font-semibold">
             Setelan Ujian
           </h1>
-          <form ref={formRef} action="/api/ujian/edit-settings" method="post" onSubmit={(e) => handleSubmit(e, formRef)} className="flex flex-col items-start gap-y-4">
+          <form ref={formRef} action="/api/ujian/edit-settings" method="post" onSubmit={(e) => handleSettingChange(e, formRef)} className="flex flex-col items-start gap-y-4">
             <div className="w-full relative">
               <input 
                 required autoComplete="off" spellCheck="off" name="name" type="text" defaultValue={exam.name}
@@ -211,7 +218,84 @@ export default function EditExam({ exam, question }) {
           </form>
         </div>
       </div>
+
+      {/* Question editor */}
+      <article className="flex-auto h-full p-3 grid grid-cols-3 grid-rows-2 gap-3">
+        <section className="row-span-2 h-full overflow-y-auto border-2 border-teal-700 rounded-lg p-2">
+          <ExamNavbar content={question.question} header={'Pertanyaan'} isChoice={false} />
+        </section>
+        <section className="overflow-y-auto border-2 border-teal-700 rounded-lg p-2">
+          <ExamNavbar key={question.choices[0].id} content={question.choices[0].choice} header={'Opsi A'} isChoice={true} />
+        </section>
+        <section className="overflow-y-auto border-2 border-teal-700 rounded-lg p-2">
+          <ExamNavbar key={question.choices[1].id} content={question.choices[0].choice} header={'Opsi B'} isChoice={true} />
+        </section>
+        <section className="overflow-y-auto border-2 border-teal-700 rounded-lg p-2">
+          <ExamNavbar key={question.choices[2].id} content={question.choices[0].choice} header={'Opsi C'} isChoice={true} />
+        </section>
+        <section className="overflow-y-auto border-2 border-teal-700 rounded-lg p-2">
+          <ExamNavbar key={question.choices[3].id} content={question.choices[0].choice} header={'Opsi D'} isChoice={true} />
+        </section>
+      </article>
     </main>
+  )
+}
+
+export function ExamNavbar({ content, header, isChoice }) {
+  // Overriding default content with current content
+  const newEditorConfig = {...EditorConfig}
+  newEditorConfig.content = content ?? ''
+
+  // New editor context
+  const editor = useEditor(newEditorConfig)
+
+  return (
+    <>
+      <nav className="flex justify-between -m-2 mb-1 p-2 bg-teal-700 text-slate-100">
+        <div className="flex mx-1">
+          {isChoice ? <input type="checkbox" className="w-8 mr-2" /> : null}
+          <h3 className="my-auto text-lg font-semibold font-inter">
+            {header}
+          </h3>
+        </div>
+        <div className="flex">
+          <ExamMenuButtons editor={editor} />
+        </div>
+      </nav>
+      <ExamEditorContentStyles />
+      <div className="-mx-1">
+        <EditorContent editor={editor} />
+      </div>
+    </>
+  )
+}
+
+export function ExamEditorContentStyles() {
+  return (
+    <style global jsx>{`
+      .ProseMirror {
+        padding: 0.5rem;
+        outline: none;
+      }
+      .ProseMirror > * + * {
+        margin-top: 0.5rem;
+      }
+      .ProseMirror img {
+        max-width: 100%;
+        height: auto;
+        pointer-events: auto;
+        user-select: auto;
+        margin: 0.5rem 0;
+      }
+      .ProseMirror p.is-editor-empty:first-child::before {
+        color: #adb5bd;
+        content: attr(data-placeholder);
+        float: left;
+        height: 0;
+        pointer-events: none;
+      }
+    `}
+    </style>
   )
 }
 

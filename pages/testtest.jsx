@@ -1,4 +1,4 @@
-import { Question } from '../components/tiptap'
+import { Question } from '../components/tiptap/exam'
 
 export default () => {
   return (

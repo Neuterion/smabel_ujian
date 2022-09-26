@@ -168,7 +168,6 @@ export const MenuButtons = ({ editor, children }) => {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')
 
-
         const file = files[i]
         const reader = new FileReader()
         reader.onload = (e) => {

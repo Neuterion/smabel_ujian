@@ -2,10 +2,8 @@ import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Placeholder from '@tiptap/extension-placeholder'
 import Dropcursor from '@tiptap/extension-dropcursor'
-import Image from '@tiptap/extension-image'
+import TiptapImage from '@tiptap/extension-image'
 import TextAlign from '@tiptap/extension-text-align'
-
-import ImageResize from 'tiptap-imagresize'
 
 import React, { useState, useRef } from 'react'
 
@@ -120,7 +118,7 @@ export const EditorConfig = {
     Placeholder.configure({
       placeholder: "Tulis sesuatu..."
     }),
-    Image.configure({
+    TiptapImage.configure({
       allowBase64: true,
     }),
     Dropcursor.configure({
@@ -388,43 +386,38 @@ export const QuestionMenuButtons = ({ editor, children }) => {
       for (let i = 0; i < files.length; i++) {
         const file = files[i]
 
-        // Convert file to Image object
-        const img = new Image()
-        i.src = e.target.result
-
-        // Resize image
-        const canvas = document.createElement('canvas')
-        const ctx = canvas.getContext('2d')
-        canvas.width = 400
-        canvas.height = 300
-        ctx.drawImage(img, 0, 0, 400, 300)
-
         const reader = new FileReader()
-        reader.onload = (e) => {
-          const src = e.target.result
-          editor.commands.setImage({ src })
-          editor.commands.createParagraphNear()
+        reader.onload = () => {
+          // Create image element, resize on canvas element, and convert to base64
+          const img = document.createElement('img')
+
+          img.onload = () => {
+            const canvas = document.createElement('canvas')
+            const ctx = canvas.getContext('2d')
+
+            // Set width & height
+            canvas.width = 400
+            canvas.height = 400 / img.width * img.height
+
+            // Draw image on canvas
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+
+            // Store base64 string
+            const src = canvas.toDataURL()
+            editor.commands.setImage({ src })
+
+            // Create new line
+            editor.commands.createParagraphNear()
+          }
+
+          img.src = reader.result
         }
-        reader.readAsDataURL(canvas.toDataURL())
+        reader.readAsDataURL(file)
       }
     }
   }
   return (
     <>
-      {/* <div id="text-style" className="flex flex-row flex-wrap">
-        <button
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          className={`p-2 ${editor.isActive('bold') ? 'is-active bg-slate-300' : 'hover:bg-slate-200'}`}
-        >
-          <FontAwesomeIcon icon={faBold} />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-          className={`p-2 ${editor.isActive('italic') ? 'is-active bg-slate-300' : 'hover:bg-slate-200'}`}
-        >
-          <FontAwesomeIcon icon={faItalic} />
-        </button>
-      </div> */}
       <div id="upload-image" className="flex flex-row flex-wrap">
         <input type="file" accept="image/*" className="hidden" multiple ref={uploadImage} onChange={toggleImageUpload} />
         <div onClick = {() => uploadImage.current.click()} className="flex items-center p-2 hover:bg-slate-200 active:bg-slate-300">
