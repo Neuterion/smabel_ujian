@@ -48,7 +48,7 @@ export default function TeacherDashboard({ userAnnouncements: announcements, use
                   </a>
                 </div>
                 {exams.map(exam => (
-                  <a href={`/teacher/ujian/${exam.id}/edit`} className="pointer-events-none flex justify-between items-center m-3 px-3 py-2 bg-slate-50 text-black/90 rounded-lg">
+                  <a href={`/teacher/ujian/${exam.id}/1/edit`} className="pointer-events-none flex justify-between items-center m-3 px-3 py-2 bg-slate-50 text-black/90 rounded-lg">
                     <h1 className="truncate w-1/2 text-lg pointer-events-auto px-4 py-3 bg-blue-700 hover:bg-blue-800 text-white/95 font-bold rounded-md">
                       {exam.name}
                     </h1>

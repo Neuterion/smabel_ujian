@@ -1,4 +1,6 @@
 import Head from 'next/head'
+import { useRouter } from 'next/router'
+
 import { useRef } from 'react'
 
 import Navbar from '../../../components/navbar'
@@ -11,6 +13,34 @@ export default function CreateExam() {
     label.classList.toggle('-translate-y-[150%]')
     label.classList.toggle('text-gray-300')
   }
+
+  // Router for redirecting after form submission
+  const router = useRouter()
+
+  // Form ref
+  const formRef = useRef()
+
+  // API route for creating exam
+  const handleCreate = async e => {
+    e.preventDefault()
+
+    // Create form data object as default form data substitution
+    const formData = {
+      name: e.target[0].value,
+      duration: parseInt(e.target[1].value),
+      grade: parseInt(e.target[2].value),
+      subject: e.target[3].value
+    }
+
+    const res = await fetch('/api/ujian/create/exam', {
+      method: 'POST',
+      body: JSON.stringify(formData)
+    })
+
+    const { exam_id } = await res.json()
+    if (res.ok) router.push(`/teacher/ujian/${exam_id}/1/edit`)
+  }
+
   return (
     <>
       <Navbar />
@@ -22,7 +52,7 @@ export default function CreateExam() {
           <h1 className="pt-1 pb-4 text-3xl text-center font-semibold">
             Buat Ujian Baru
           </h1>
-          <form action="/api/ujian/create" method="post" className="flex flex-col items-start gap-y-4">
+          <form onSubmit={(e) => handleCreate(e)} ref={formRef} method="post" className="flex flex-col items-start gap-y-4">
             <div className="w-full relative">
               <input 
                 required autoComplete="off" spellCheck="off" name="name" type="text"

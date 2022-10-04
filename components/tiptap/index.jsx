@@ -133,6 +133,26 @@ export const EditorConfig = {
   content: ''
 }
 
+export const EditorConfig_CustomContent = (content) => ({
+  extensions: [
+    StarterKit,
+    Placeholder.configure({
+      placeholder: "Tulis sesuatu..."
+    }),
+    TiptapImage.configure({
+      allowBase64: true,
+    }),
+    Dropcursor.configure({
+      color: '#ff0000',
+      width: '2px',
+    }),
+    TextAlign.configure({
+      types: ['heading', 'paragraph'],
+    })
+  ],
+  autofocus: true,
+  content: content
+})
 
 export const MenuButtons = ({ editor, children }) => {
   const [textStyle, setTextStyle] = useState('') // -> toggleTextStyle()

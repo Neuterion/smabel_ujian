@@ -1,3 +1,5 @@
+import { prisma } from '../../../../lib/prisma'
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(401).redirect('/')
   const { id, data } = JSON.parse(req.body)
